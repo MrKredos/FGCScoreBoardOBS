@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<!--
+current is what is being displayed 
+{current:
+pName1
+pName2
+pScore1
+pScore2
+pSponsor1
+pSponsor2
+pState1
+pState2
+cName1
+cName2
+cSponsor1
+cSponsor2
+game
+round
+}
+-->
+
+<script type="text/javascript"> 
+    function init() {
+        document.getElementById('pScore1').value = localStorage.getItem('pScore1');
+        document.getElementById('pScore2').value = localStorage.getItem('pScore2');
+        
+    }
+
+    function updateUI() {
+        document.getElementById('pScore1').value = localStorage.getItem('pScore1');
+        document.getElementById('pScore2').value = localStorage.getItem('pScore2');
+    }
+    
+    function saveRecords() { //saves input from text box to local storage
+        // console.log(localStorage.getItem('pScore1')); 
+        localStorage.setItem('pScore1', document.getElementById('pScore1').value);
+        localStorage.setItem('pScore2', document.getElementById('pScore2').value);
+    }
+
+    function deleteLocalStorage() {
+        localStorage.clear();
+        updateUI(); 
+    }
+
+    function resetScores() {
+        document.getElementById('pScore1').value = null; 
+        document.getElementById('pScore2').value = null;
+    }
+
+    function swapPlayers() {
+        let tempSwap = document.getElementById('pScore1').value;  
+        console.log(document.getElementById('pScore1').value); 
+        localStorage.setItem('pScore1', document.getElementById('pScore2').value); 
+        localStorage.setItem('pScore2', tempSwap);
+        
+        updateUI(); 
+    }
+</script>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>FGC Stream Panel</title>
+    </head>
+    <body onLoad="init()">
+        <div id="board">
+            <div id="scoreboard"> 
+                <div id="areaPlayer1">
+                    Player 1
+                    <input type="number" id="pScore1">
+                    <input type="text" id="pSponsor1">
+                    <input type="search" id="pName1"><br>
+                </div>
+                
+                <div id="round"></div>
+
+                <div id="areaPlayer2">
+                    Player 2
+                    <input type="number" id="pScore2">
+                    <input type="text" id="pSponsor2">
+                    <input type="text" id="pName2"><br>
+                </div>
+
+                <input type="submit" value="Save Records" onClick="saveRecords()"></button> 
+                <input type="submit" value="Delete Records" onClick="deleteLocalStorage()"></button>
+                <input type="submit" value="Reset Scores" onClick="resetScores()"></button>
+                <input type="submit" value="Swap Players" onClick="swapPlayers()"></button> 
+            </div>
+            <div id="commentary">
+                <div id="cName1"></div>
+                <div id="cName2"></div>
+            </div>
+        </div>
+    </body>
+</html>
