@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 
 <!--
-current is what is being displayed 
-{current:
+vars i'll be using
+
 pName1
 pName2
 pScore1
@@ -17,25 +17,34 @@ cSponsor1
 cSponsor2
 game
 round
-}
+pCharacter
+
 -->
+
 
 <script type="text/javascript"> 
     function init() {
-        document.getElementById('pScore1').value = localStorage.getItem('pScore1');
-        document.getElementById('pScore2').value = localStorage.getItem('pScore2');
+        updateUI(); 
         
     }
 
     function updateUI() {
         document.getElementById('pScore1').value = localStorage.getItem('pScore1');
         document.getElementById('pScore2').value = localStorage.getItem('pScore2');
+        document.getElementById('pName1').value = localStorage.getItem('pName1');
+        document.getElementById('pName2').value = localStorage.getItem('pName2');
+        document.getElementById('pSponsor1').value = localStorage.getItem('pSponsor1');
+        document.getElementById('pSponsor2').value = localStorage.getItem('pSponsor2');
     }
     
     function saveRecords() { //saves input from text box to local storage
         // console.log(localStorage.getItem('pScore1')); 
         localStorage.setItem('pScore1', document.getElementById('pScore1').value);
         localStorage.setItem('pScore2', document.getElementById('pScore2').value);
+        localStorage.setItem('pName1', document.getElementById('pName1').value);
+        localStorage.setItem('pName2', document.getElementById('pName2').value);
+        localStorage.setItem('pSponsor1', document.getElementById('pSponsor1').value);
+        localStorage.setItem('pSponsor2', document.getElementById('pSponsor2').value);
     }
 
     function deleteLocalStorage() {
@@ -49,12 +58,27 @@ round
     }
 
     function swapPlayers() {
+        swap('pScore1', 'pScore2'); 
+        swap('pSponsor1', 'pSponsor2'); 
+        swap('pName1', 'pName2'); 
+        /*
         let tempSwap = document.getElementById('pScore1').value;  
-        console.log(document.getElementById('pScore1').value); 
+        //console.log(document.getElementById('pScore1').value); 
+        
         localStorage.setItem('pScore1', document.getElementById('pScore2').value); 
         localStorage.setItem('pScore2', tempSwap);
+        */
         
         updateUI(); 
+    }
+
+    function swap(first, second) { //js doesn't have reference, so we will just do it here. 
+        let tempSwap = document.getElementById(first).value; 
+
+        localStorage.setItem(first, document.getElementById(second).value); 
+        localStorage.setItem(second , tempSwap);
+
+        return; 
     }
 </script>
 
@@ -70,7 +94,7 @@ round
                     Player 1
                     <input type="number" id="pScore1">
                     <input type="text" id="pSponsor1">
-                    <input type="search" id="pName1"><br>
+                    <input type="text" id="pName1"><br>
                 </div>
                 
                 <div id="round"></div>

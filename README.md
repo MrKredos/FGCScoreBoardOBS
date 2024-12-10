@@ -20,17 +20,17 @@ saving records works (just for score at the moment, implementing everything else
 ## TODO LIST:
 - Everything
 - Import database/JSON/excel/text
-  - Need to figure out what is necessary.
-- Probs best to implement:
-  - Start.gg api implementation
 - Wishlist: 
   - 1v1s
   - 2v2s
-  - Top 8 brackets 
+  - Display top 8 bracket, or whole bracket
+    - Whole bracket sounds a little too complicated, but worth the challenge
+  - Docker will change depending on the scene shown. 
   - Exhibitions
     - Not deathmatches but like team vs team stuff, maybe up to 20 people per team?
       - Deathmatches can use the 1v1s page
     - Similar to how Mildsome does his 3S East vs West series (https://www.youtube.com/watch?v=OsRCyU94hxk) 
     - Local time display (togglable) 
-    - Insta replays 
+  - Insta replays 
   - Challonge api implementation 
+  - Start.gg api implementation

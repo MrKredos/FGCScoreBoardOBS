@@ -6,22 +6,40 @@ body {
     h1{
         color: black; 
     }
+
+    p {
+        font-size: 5vw;
+    }
+
 </style>
 <script type="text/javascript"> 
-    
-    function updateUI() {
-        document.getElementById('pScore1').innerHTML = localStorage.getItem('pScore1');
-    }
-    function init(){
 
-        document.getElementById('pScore1').innerHTML = localStorage.getItem('pScore1');
+    function updateUI() {
         
-        window.addEventListener("storage", function () {
-            // do your checks to detect
-            updateUI();
-            // changes in "e1", "e2" & "e3" here
-        }, false);
+        document.getElementById('pScore1').innerHTML = localStorage.getItem('pScore1');
+        document.getElementById('pName1').innerHTML = localStorage.getItem('pSponsor1') + " " + localStorage.getItem('pName1');
+
+
     }
+
+    function init(){
+        document.getElementById('pScore1').innerHTML = localStorage.getItem('pScore1');
+        document.getElementById('pName1').innerHTML = localStorage.getItem('pSponsor1') + " " + localStorage.getItem('pName1');
+        
+        window.addEventListener("storage", function (e) {
+        // do your checks to detect\
+        updateUI() 
+        document.getElement
+        // changes in "e1", "e2" & "e3" here
+        }, false);
+
+        window.addEventListener("storage", () => {
+        // When local storage changes, dump the list to
+        // the console.
+        console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+});
+    }
+
 </script>
 
 
@@ -32,7 +50,14 @@ body {
     </head>
     
     <body onLoad="init()">
-    <h1 id="pScore1">HELLO WORLD</h1>
+        <div> 
+            <p>pScore1: </p> 
+            <p id="pScore1">HELLO WORLD</p>
+
+            <p>pName1: </p> 
+            <p id="pName1"></p>
+        </div>
+    
         
     </body>
 </html>
