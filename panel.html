@@ -19,6 +19,13 @@ game
 round
 pCharacter
 
+how to store values.
+case: everytime a player shows up, we want to add them to the database.
+resolution: add everyone via start.gg 
+issue: if people  haven't signed up, we still want to be able to add them.
+
+CHECK NAME ONLY
+if name is added, check with json database. if it doesn't exist, 
 -->
 
 
@@ -27,6 +34,16 @@ pCharacter
         updateUI(); 
         
     }
+
+    var player = { 'pName': "patmeharder", 'pSponsor': "WSU"};
+
+    // Put the object into storage
+    localStorage.setItem('player', JSON.stringify(player));
+
+    // Retrieve the object from storage
+    var retrievedObject = localStorage.getItem('player');
+
+    console.log('retrievedObject: ', JSON.parse(retrievedObject));
 
     function updateUI() {
         document.getElementById('pScore1').value = localStorage.getItem('pScore1');
@@ -80,6 +97,8 @@ pCharacter
 
         return; 
     }
+
+    
 </script>
 
 <html lang="en">
@@ -92,18 +111,18 @@ pCharacter
             <div id="scoreboard"> 
                 <div id="areaPlayer1">
                     Player 1
-                    <input type="number" id="pScore1">
-                    <input type="text" id="pSponsor1">
-                    <input type="text" id="pName1"><br>
+                    <input type="number" id="pScore1" class="score">
+                    <input type="text" id="pSponsor1" class="sponsor">
+                    <input type="text" id="pName1" class="name"><br>
                 </div>
                 
                 <div id="round"></div>
 
                 <div id="areaPlayer2">
                     Player 2
-                    <input type="number" id="pScore2">
-                    <input type="text" id="pSponsor2">
-                    <input type="text" id="pName2"><br>
+                    <input type="number" id="pScore2" class="score">
+                    <input type="text" id="pSponsor2" class="sponsor">
+                    <input type="text" id="pName2" class="name"><br>
                 </div>
 
                 <input type="submit" value="Save Records" onClick="saveRecords()"></button> 
@@ -111,9 +130,15 @@ pCharacter
                 <input type="submit" value="Reset Scores" onClick="resetScores()"></button>
                 <input type="submit" value="Swap Players" onClick="swapPlayers()"></button> 
             </div>
-            <div id="commentary">
-                <div id="cName1"></div>
-                <div id="cName2"></div>
+            <div id="commentator1">
+                Commentator 1
+                <input type="text" id="cSponsor1" class="sponsor">
+                <input type="text" id="cName1" class="name">
+            </div>
+            <div id="commentator2">
+                Commentator 2                
+                <input type="text" id="cSponsor2" class="sponsor">
+                <input type="text" id="cName2" class="name">
             </div>
         </div>
     </body>

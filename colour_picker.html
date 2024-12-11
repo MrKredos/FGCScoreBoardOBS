@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<style>
+    @font-face { font-family: 'Bebas Neue'; src: url(fonts/BebasNeue.otf));}
+    
+    body {background-color: grey;} 
+    
+    html {
+        font-family: 'Bebas Neue';
+    }
+    
+    #pSponsor {
+        color: darkgrey;
+    }
+    #pSponsor1:after { content: " "; }
+    
+    #board {
+        position:absolute;
+        top:0rem;
+        left:0rem;
+        width:1920rem;
+        height:1080rem;
+        background: url(/images/background.png) no-repeat;
+    } 
+    #container {
+        background-color: white;
+        position: absolute;
+        top: 10rem;
+    }
+    #pName1, #pSponsor1 {
+        font-size: 40px;
+        text-align:left;
+    }
+
+    #p1Container, #p2Container{
+        position: absolute;
+        left: 150px;
+        top: 18px;
+        height: 62px;
+        width: 500px;
+
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+        .rectangle {
+        position: absolute; 
+        left: 660px;
+        top: 22px;
+        height: 50px;
+        width: 50px;
+        background-color: #FFF;
+    }
+    
+    .parallelogram {
+        position: absolute; 
+        left: 200px;
+        top: 22px;
+        height: 50px;
+        width: 485px;
+        transform: skew(135deg);
+        background: #555;
+    }
+    /* background-color: rgba(0, 0, 0, 0.3); */
+}
+    
+</style>
+<script type="text/javascript">
+    function changeRed(value) {
+        document.getElementById('valRed').innerHTML = value;
+        changeAll();
+    }
+    function changeGreen(value) {
+        document.getElementById('valGreen').innerHTML = value; 
+        changeAll(); 
+    }
+    function changeBlue(value) {
+        document.getElementById('valBlue').innerHTML = value;
+        changeAll();
+    }
+    function changeAll() {
+        var r = document.getElementById('valRed').innerHTML;
+        var g = document.getElementById('valGreen').innerHTML;
+        var b = document.getElementById('valBlue').innerHTML;
+        document.getElementById('change').style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+        //document.getElementById('changetxt').innerHTML = "rgb(" + r + ", " + g + ", " + b + ")";
+        var converted = toHex(r) + toHex(g) + toHex(b); 
+        document.getElementById('changetxthex').innerHTML = "#" + converted;
+        
+        
+    }
+    
+    function toHex(n) {
+      var hex = (+n).toString(16);
+      while (hex.length < 2) 
+      {
+          hex = "0" + hex; 
+      }
+      console.log(hex); 
+      return hex;
+    }
+    //document.getElementById('change').style.color = #000000;
+</script>
+<head>
+    <title>Colour Picker</title>
+    
+</head>
+<!-- 
+colour picker
+what we see: 
+scoreboard with 
+game background
+ui
+score
+score box
+sponsor
+player name
+
+what we interact with:
+box input for colour
+--> 
+<html lang="en">
+<body>
+    <div id="board">
+        <div class="parallelogram"></div>
+        <div class="rectangle"></div>
+        <div id="p1Container">
+            <div id="pSponsor1">TEST</div>
+            <div id="space"></div>
+            <div id="pName1">Player 1</div>
+        </div>
+        <div id="score1">
+            <div id="pScore1">0</div>
+        </div>
+        <div id="container">
+        <h1>Colour Picker</h1>
+        <table class="w3-table w3-border" style="width:100%">
+        <tbody><tr>
+            <th>Red</th>
+            <th>Green</th>
+            <th>Blue</th>
+            </tr>
+            <tr>
+            <td id="valRed">130</td>
+            <td id="valGreen">130</td>
+            <td id="valBlue">130</td>
+            </tr>
+            <tr>
+            <td id="red" style="height:50px;background-color:red"></td>
+            <td id="green" style="background-color:green"></td>
+            <td id="blue" style="background-color:blue"></td>
+            </tr>
+            <tr>
+            <td>
+            <input oninput="changeRed(this.value)" onchange="changeRed(this.value)" type="range" id="slideRed" name="slideRed" min="0" max="255">
+            </td>
+            <td>
+            <input oninput="changeGreen(this.value)" onchange="changeGreen(this.value)" type="range" id="slideGreen" name="slideGreen" min="0" max="255">
+            </td>
+            <td>
+            <input oninput="changeBlue(this.value)" onchange="changeBlue(this.value)" type="range" id="slideBlue" name="slideBlue" min="0" max="255">
+            </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div id="change" style="height: 50px; background-color: rgb(130,130,130);"></div>
+            <span id="changetxthex"></span>
+        </div>
+    </div>
+</body>
+</html> 
