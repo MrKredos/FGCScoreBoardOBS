@@ -21,20 +21,43 @@ pCharacter
 
 how to store values.
 case: everytime a player shows up, we want to add them to the database.
-resolution: add everyone via start.gg 
+resolution: add everyone via start.gg, solves having to store things locally.
 issue: if people  haven't signed up, we still want to be able to add them.
 
 CHECK NAME ONLY
-if name is added, check with json database. if it doesn't exist, 
--->
+if name is added, check with json database. if it doesn't exist, add them.
 
+some minor issues: 
+what if name is mispelled, multiple of the same name will show 
+    rectified if we can delete single entries
+too many names stored?
+    doubt it'll reach that, otherwise we need to figure out how to cull names in future
+        count how many times it's been used? might make things more complicated
+-->
+<style> 
+    .score, .sponsor {
+        width: 30px;
+    }
+    
+    .name {
+        width: 100px; 
+    }
+    
+    #save {
+        background-color: lightgreen;    
+    }
+    
+    #delete {
+        background-color: lightcoral;
+    }
+
+</style>
 
 <script type="text/javascript"> 
     function init() {
-        updateUI(); 
-        
+        updateUI();
     }
-
+    var count = 0; 
     var player = { 'pName': "patmeharder", 'pSponsor': "WSU"};
 
     // Put the object into storage
@@ -52,6 +75,12 @@ if name is added, check with json database. if it doesn't exist,
         document.getElementById('pName2').value = localStorage.getItem('pName2');
         document.getElementById('pSponsor1').value = localStorage.getItem('pSponsor1');
         document.getElementById('pSponsor2').value = localStorage.getItem('pSponsor2');
+        document.getElementById('cName1').value = localStorage.getItem('cName1');
+        document.getElementById('cName2').value = localStorage.getItem('cName2');
+        document.getElementById('cSponsor1').value = localStorage.getItem('cSponsor1');
+        document.getElementById('cSponsor2').value = localStorage.getItem('cSponsor2');
+        document.getElementById('round').value = localStorage.getItem('round');
+        
     }
     
     function saveRecords() { //saves input from text box to local storage
@@ -62,16 +91,38 @@ if name is added, check with json database. if it doesn't exist,
         localStorage.setItem('pName2', document.getElementById('pName2').value);
         localStorage.setItem('pSponsor1', document.getElementById('pSponsor1').value);
         localStorage.setItem('pSponsor2', document.getElementById('pSponsor2').value);
+        localStorage.setItem('cName1', document.getElementById('cName1').value);
+        localStorage.setItem('cName2', document.getElementById('cName2').value);
+        localStorage.setItem('cSponsor1', document.getElementById('cSponsor1').value);
+        localStorage.setItem('cSponsor2', document.getElementById('cSponsor2').value);
+        localStorage.setItem('round', document.getElementById('round').value);
+        localStorage.setItem('msg', document.getElementById('msg').value);
+        
+        let debugText = "Saved"; 
+        count++; 
+        if (count > 0) {
+            
+            for (let i = 0; i < count; i++) {
+                debugText += "!"; 
+            }
+        }
+        document.getElementById('debug').innerHTML = debugText; 
     }
 
     function deleteLocalStorage() {
         localStorage.clear();
         updateUI(); 
+        document.getElementById('round').value = "Tournament"; 
+        document.getElementById('debug').innerHTML = "Local storage deleted";
+        count = 0; 
     }
 
     function resetScores() {
-        document.getElementById('pScore1').value = null; 
-        document.getElementById('pScore2').value = null;
+        localStorage.setItem('pScore1', '0');
+        localStorage.setItem('pScore2', '0');
+        updateUI();
+        document.getElementById('debug').innerHTML = "Scores Reset";
+        count = 0; 
     }
 
     function swapPlayers() {
@@ -87,6 +138,9 @@ if name is added, check with json database. if it doesn't exist,
         */
         
         updateUI(); 
+        
+        document.getElementById('debug').innerHTML = "Players Swaped";
+        count = 0; 
     }
 
     function swap(first, second) { //js doesn't have reference, so we will just do it here. 
@@ -111,35 +165,55 @@ if name is added, check with json database. if it doesn't exist,
             <div id="scoreboard"> 
                 <div id="areaPlayer1">
                     Player 1
-                    <input type="number" id="pScore1" class="score">
+                    
                     <input type="text" id="pSponsor1" class="sponsor">
-                    <input type="text" id="pName1" class="name"><br>
-                </div>
-                
-                <div id="round"></div>
-
+                    <input type="text" id="pName1" class="name" placeholder="P1 NAME">
+                    <input type="number" id="pScore1" class="score" placeholder="0">
+                </div>   
                 <div id="areaPlayer2">
                     Player 2
-                    <input type="number" id="pScore2" class="score">
                     <input type="text" id="pSponsor2" class="sponsor">
-                    <input type="text" id="pName2" class="name"><br>
+                    <input type="text" id="pName2" class="name" placeholder="P2 NAME">
+                    <input type="number" id="pScore2" class="score" placeholder="0">
                 </div>
-
-                <input type="submit" value="Save Records" onClick="saveRecords()"></button> 
-                <input type="submit" value="Delete Records" onClick="deleteLocalStorage()"></button>
-                <input type="submit" value="Reset Scores" onClick="resetScores()"></button>
-                <input type="submit" value="Swap Players" onClick="swapPlayers()"></button> 
+                <div>
+                Match
+                    <select name="round" id="round">
+                    <option value="Tournament">Tournament</option>
+                    <option value="Winners Pools">Winners Pools</option>
+                    <option value="Losers Pools">Losers Pools</option>
+                    <option value="Winners Top 8">Winners Top 8</option>
+                    <option value="Losers Top 8">Losers Top 8</option>
+                    <option value="Losers Semi Finals">Losers Semi Finals</option>   
+                    <option value="Winners Finals">Winners Finals</option>
+                    <option value="Losers Finals">Losers Finals</option>
+                    <option value="Grand Final Reset">Grand Final Reset</option>
+                    <option value="Exhibition">Exhibition</option> 
+                    <option value="Money Match">Money Match</option>  
+                    </select>
+                </div>
             </div>
             <div id="commentator1">
                 Commentator 1
                 <input type="text" id="cSponsor1" class="sponsor">
-                <input type="text" id="cName1" class="name">
+                <input type="text" id="cName1" class="name" placeholder="C1 NAME">
             </div>
             <div id="commentator2">
                 Commentator 2                
                 <input type="text" id="cSponsor2" class="sponsor">
-                <input type="text" id="cName2" class="name">
+                <input type="text" id="cName2" class="name" placeholder="C2 NAME">
+            </div>
+            <div>
+            BRB Screen Message 
+                <input type="text" id="msg" placeholder="for brb screen WIP"> 
+            </div>
+            <div id="buttons">
+                <input type="submit" id="save" value="Save" onClick="saveRecords()">
+                <input type="submit" id="swap" value="Swap Players" onClick="swapPlayers()">
+                <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()">
+                <input type="submit" id="delete" value="Delete Records" onClick="deleteLocalStorage()">
             </div>
         </div>
+        <div id="debug"></div>
     </body>
 </html>

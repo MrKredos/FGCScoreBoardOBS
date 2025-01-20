@@ -13,16 +13,42 @@ Note: Tested with OBS 31.0.0-rc1, should theoretically work with most versions o
 2. Add ```gameOverlay.html``` as a Browser Source
 3. Should be good to go from there. (add screenshots for steps)
 
+## List of Variable names used in localstorage
+pName1
+pName2
+pScore1
+pScore2
+pSponsor1
+pSponsor2
+pSponsor1
+pSponsor2
+cName1
+cName2
+cSponsor1
+cSponsor2
+round
+
 ## Progress
+1.0:
 panel and gameOverlay interact now. 
 saving records works (just for score at the moment, implementing everything else soon)
+
+2.0:
+- everything works properly
+  - lots of changes here dunno if i can list them all but i'll try
+    - scores + names + sponsors added for both players
+      - swap for players added
+    - comms also added
+    - created a custom overlay + comms overlay + colour picker
+      - you can use these, IDC. however, please don't use the same colour schemes lol, at least change that much 
+- dunno what else to say, kinda forgot what i've done already. look at version history if you really wanna check
+
 
 ## TODO LIST:
 - Everything
 - Import database/JSON/excel/text
 - Wishlist: 
-  - 1v1s
-  - 2v2s
+  - ~~1v1s~~
   - Display top 8 bracket, or whole bracket
     - Whole bracket sounds a little too complicated, but worth the challenge
   - Docker will change depending on the scene shown. 
@@ -34,3 +60,4 @@ saving records works (just for score at the moment, implementing everything else
   - Insta replays 
   - Challonge api implementation 
   - Start.gg api implementation
+  - 2v2s (can probably do without)

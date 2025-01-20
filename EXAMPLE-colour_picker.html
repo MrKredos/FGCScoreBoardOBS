@@ -1,0 +1,264 @@
+<!--  WIP, DONT PLAN ON FINISHING
+ 
+attempted to make something to let it be easier to show what each thing might look like, but gave up since my clients are not the most creatively inclined
+
+feel free to take inspiration, i would appreciate a shout out, but not necessary
+
+twitter: patmeharder_ 
+disc: patmeharder
+
+get in contact if you have any questions, happy to answer them if appropriate :) 
+-->
+
+<!DOCTYPE html>
+<style>
+    @font-face { font-family: 'Bebas Neue'; src: url(fonts/BebasNeue.otf));}
+    
+    body {
+        background-color: grey;
+    background: url(/images/background.png) no-repeat;
+    } 
+    
+    html {
+        font-family: 'Bebas Neue';
+    }
+    
+    #pSponsor {
+        color: darkgrey;
+    }
+    #pSponsor1:after { content: " "; }
+    
+    #board {
+        position:absolute;
+        top:0rem;
+        left:0rem;
+        width:1920rem;
+        height:1080rem;
+        background: url(/images/background.png) no-repeat;
+    } 
+    #container {
+        background-color: white;
+        position: absolute;
+        top: 10rem;
+    }
+    #pName1, #pSponsor1, #pScore1 {
+        font-size: 50px;
+        text-align:center;
+    }
+
+    #p1Container, #p2Container{
+        position: absolute;
+        left: 150px;
+        top: 18px;
+        height: 62px;
+        width: 500px;
+
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+    
+    #score1, #score2 {
+        position: absolute;
+        left: 660px;
+        top: 19px;
+        width: 50px; 
+        height: 50px; 
+        text-align: center;
+    }
+    .rectangle {
+        position: absolute; 
+        left: 660px;
+        top: 22px;
+        height: 50px;
+        width: 50px;
+        background-color: #888;
+    }
+    
+    .parallelogram {
+        position: absolute; 
+        left: 200px;
+        top: 22px;
+        height: 50px;
+        width: 485px;
+        transform: skew(135deg);
+        background: #555;
+    }
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    
+    #inputs {
+        position: absolute;
+        top: 110px; 
+        background-color: white; 
+    }
+    
+    input {
+        width: 100px;
+    }
+
+    
+</style>
+<script type="text/javascript">
+    function changeRed(value) {
+        document.getElementById('valRed').innerHTML = value;
+        changeAll();
+    }
+    function changeGreen(value) {
+        document.getElementById('valGreen').innerHTML = value; 
+        changeAll(); 
+    }
+    function changeBlue(value) {
+        document.getElementById('valBlue').innerHTML = value;
+        changeAll();
+    }
+    function changeAll() {
+        var r = document.getElementById('valRed').innerHTML;
+        var g = document.getElementById('valGreen').innerHTML;
+        var b = document.getElementById('valBlue').innerHTML;
+        document.getElementById('change').style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+        //document.getElementById('changetxt').innerHTML = "rgb(" + r + ", " + g + ", " + b + ")";
+        var converted = toHex(r) + toHex(g) + toHex(b); 
+        document.getElementById('changetxthex').innerHTML = "#" + converted;        
+    }
+    
+    function toHex(n) {
+        var hex = (+n).toString(16);
+        while (hex.length < 2) 
+        {
+          hex = "0" + hex; 
+        }
+        //console.log(hex); 
+        return hex;
+    }
+    
+    function randomiseSlider() {
+        var r = getRandomInt(255);
+        var g = getRandomInt(255);
+        var b = getRandomInt(255);
+        document.getElementById('slideRed').value =  r;
+        changeRed(r); 
+        document.getElementById('slideGreen').value = g;    
+        changeGreen(g);
+        document.getElementById('slideBlue').value = b; 
+        changeBlue(b); 
+        
+        changeAll();
+    }
+    
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+    
+    function changePara(color) {
+        document.getElementsByClassName("parallelogram").style.backgroundColor = color; 
+    }
+    //document.getElementById('change').style.color = #000000;
+    
+    function copy() {
+        var copyText = document.getElementById('changetxthex');
+        
+        navigator.clipboard.writeText(copyText.innerHTML);
+        console.log(copyText.innerHTML);
+    }
+</script>
+<head>
+    <title>Colour Picker</title>
+    
+</head>
+<!-- 
+colour picker
+what we see: 
+scoreboard with 
+game background
+ui
+score
+score box
+sponsor
+player name
+
+what we interact with:
+box input for colour
+--> 
+<html lang="en">
+<body>
+    <div id="board">
+        <div class="parallelogram"></div>
+        <div class="rectangle"></div>
+        <div id="p1Container">
+            <div id="pSponsor1">TEST</div>
+            <div id="space">&emsp;</div>
+            <div id="pName1">Player 1</div>
+        </div>
+        <div id="score1">
+            <div id="pScore1">0</div>
+        </div>
+        <div id="inputs">
+            <table> 
+                <tr>
+                    <th>Name Background</th>
+                    <th>Score Background</th>
+                    <th>Sponsor</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+                <tr>
+                    <th><input type="text" id="parallelogram"></th>
+                    <th><input type="text" id="score_box"></th>
+                    <th><input type="text" id="sponsor"> </th>
+                    <th><input type="text" id="name"> </th>
+                    <th><input type="text" id="score"> </th>
+                    <th><button id="submit" onclick="submited()">Submit Button</button></th>
+                    
+                </tr>
+            </table>
+            <div style="background-color: white">
+                
+                
+            </div>
+            
+            
+            
+            
+            
+            
+        </div>
+        <div id="container">
+            <h1>Colour Picker</h1>
+            <table class="w3-table w3-border" style="width:100%">
+            <tbody><tr>
+                <th>Red</th>
+                <th>Green</th>
+                <th>Blue</th>
+                </tr>
+                <tr>
+                <td id="valRed">130</td>
+                <td id="valGreen">130</td>
+                <td id="valBlue">130</td>
+                </tr>
+                <tr>
+                <td id="red" style="height:50px;background-color:red"></td>
+                <td id="green" style="background-color:green"></td>
+                <td id="blue" style="background-color:blue"></td>
+                </tr>
+                <tr>
+                <td>
+                <input oninput="changeRed(this.value)" onchange="changeRed(this.value)" type="range" id="slideRed" name="slideRed" min="0" max="255">
+                </td>
+                <td>
+                <input oninput="changeGreen(this.value)" onchange="changeGreen(this.value)" type="range" id="slideGreen" name="slideGreen" min="0" max="255">
+                </td>
+                <td>
+                <input oninput="changeBlue(this.value)" onchange="changeBlue(this.value)" type="range" id="slideBlue" name="slideBlue" min="0" max="255">
+                </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div id="change" style="height: 50px; background-color: rgb(130,130,130);"></div>
+            <span id="changetxthex">#000000</span>
+            <button onclick="copy()">Copy</button>
+            <button onclick="randomiseSlider()">Randomise</button>
+        </div>
+    </div>
+</body>
+</html> 
