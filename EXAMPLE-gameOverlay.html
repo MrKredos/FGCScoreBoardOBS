@@ -66,7 +66,7 @@ get in contact if you have any questions, happy to answer them if appropriate :)
     }
     
     #p2Container {
-        left: 1275px; 
+        left: 1270px; 
         justify-content: left; 
     }
     
@@ -155,11 +155,22 @@ get in contact if you have any questions, happy to answer them if appropriate :)
         document.getElementById('pScore2').innerHTML = localStorage.getItem('pScore2');
         document.getElementById('pName1').innerHTML = localStorage.getItem('pName1');
         document.getElementById('pName2').innerHTML = localStorage.getItem('pName2');
+        document.getElementById('round').innerHTML = localStorage.getItem('round');
         document.getElementById('pSponsor1').innerHTML = localStorage.getItem('pSponsor1');
         document.getElementById('pSponsor2').innerHTML = localStorage.getItem('pSponsor2');
-        document.getElementById('round').innerHTML = localStorage.getItem('round');
+        
+        if (localStorage.getItem('pSponsor1') === '') {
+            document.getElementById('pSpace1').style.display = 'none';
+        } else {
+            document.getElementById('pSpace1').style.display = 'block'; 
+        }
+        if (localStorage.getItem('pSponsor2') === '') {
+            document.getElementById('pSpace2').style.display = 'none'; 
+        } else {  
+            document.getElementById('pSpace2').style.display = 'block'; 
+        }
 
-    }
+}
 
     function init(){
         
@@ -195,8 +206,8 @@ get in contact if you have any questions, happy to answer them if appropriate :)
             <div id="p1rectangle"></div>
             <div id="p1Container">
                 <div id="pSponsor1">TEST</div>
-                <div class="space">&emsp;</div>
-                <div id="pName1">Player 1</div>
+                <div class="space" id="pSpace1">&emsp;</div>
+                 <div id="pName1">Player 1</div>
             </div>
             <div id="score1">
                 <div id="pScore1">1</div>
@@ -215,7 +226,7 @@ get in contact if you have any questions, happy to answer them if appropriate :)
             <div id="p2rectangle"></div>
             <div id="p2Container">
                 <div id="pSponsor2">test</div>
-                <div class="space">&emsp;</div>
+                <div class="space" id="pSpace2">&emsp;</div>
                 <div id="pName2">Player 2</div>
             </div>
             <div id="score2">

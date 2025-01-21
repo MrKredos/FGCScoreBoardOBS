@@ -17,7 +17,8 @@ cSponsor1
 cSponsor2
 game
 round
-pCharacter
+pCharacter1 uNUSED FOR NOW
+pCharacter2 UNUSED FOR NOW
 
 how to store values.
 case: everytime a player shows up, we want to add them to the database.
@@ -50,15 +51,26 @@ too many names stored?
     #delete {
         background-color: lightcoral;
     }
+    
+    input[type=number]::-webkit-inner-spin-button {
+        opacity: 1
+    }   
+    
 
 </style>
 
 <script type="text/javascript"> 
     function init() {
         updateUI();
+        
+        input.addEventListener("keypress", function(event) {
+          if (event.key === "Enter") {
+            document.getElementById("save").click();
+          }
+        });
     }
     var count = 0; 
-    var player = { 'pName': "patmeharder", 'pSponsor': "WSU"};
+    var player = { 'pName1': "patmeharder", 'pSponsor1': "WSU"};
 
     // Put the object into storage
     localStorage.setItem('player', JSON.stringify(player));
@@ -102,7 +114,7 @@ too many names stored?
         count++; 
         if (count > 0) {
             
-            for (let i = 0; i < count; i++) {
+            for (let i = 0; i < count; i++) { // adds an '!' every consecutive time you press save. 
                 debugText += "!"; 
             }
         }
@@ -111,9 +123,11 @@ too many names stored?
 
     function deleteLocalStorage() {
         localStorage.clear();
-        updateUI(); 
-        document.getElementById('round').value = "Tournament"; 
+        localStorage.setItem('round', "Tournament"); 
+        localStorage.setItem('pScore1', "0"); 
+        localStorage.setItem('pScore2', "0"); 
         document.getElementById('debug').innerHTML = "Local storage deleted";
+        updateUI(); 
         count = 0; 
     }
 
@@ -157,6 +171,7 @@ too many names stored?
 
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <meta charset="UTF-8"/>
         <title>FGC Stream Panel</title>
     </head>
@@ -187,6 +202,7 @@ too many names stored?
                     <option value="Losers Semi Finals">Losers Semi Finals</option>   
                     <option value="Winners Finals">Winners Finals</option>
                     <option value="Losers Finals">Losers Finals</option>
+                    <option value="Grand Final Reset">Grand Finals</option>
                     <option value="Grand Final Reset">Grand Final Reset</option>
                     <option value="Exhibition">Exhibition</option> 
                     <option value="Money Match">Money Match</option>  

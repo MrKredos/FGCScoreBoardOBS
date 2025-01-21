@@ -29,11 +29,15 @@ cSponsor2
 round
 
 ## Progress
-1.0:
-panel and gameOverlay interact now. 
-saving records works (just for score at the moment, implementing everything else soon)
+v2.1:
+- panel.html minor QOL changes
+  - score buttons for changing scores, opacity = 1. 
+    - always shows
+  - deleting scores works better now
+    - scores reset to 0, round reset to tournament 
+  - added grand finals to round tab
 
-2.0:
+v2.0:
 - everything works properly
   - lots of changes here dunno if i can list them all but i'll try
     - scores + names + sponsors added for both players
@@ -43,6 +47,9 @@ saving records works (just for score at the moment, implementing everything else
       - you can use these, IDC. however, please don't use the same colour schemes lol, at least change that much 
 - dunno what else to say, kinda forgot what i've done already. look at version history if you really wanna check
 
+v1.0:
+- panel and gameOverlay interact now. 
+- saving records works (just for score at the moment, implementing everything else soon)
 
 ## TODO LIST:
 - Everything
