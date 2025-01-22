@@ -10,7 +10,7 @@ get in contact if you have any questions, happy to answer them if appropriate :)
 
 <!DOCTYPE html>
 <style>
-    @font-face { font-family: 'Bebas Neue'; src: url(fonts/BebasNeue.otf));}
+    @font-face { font-family: 'Bebas Neue'; src: url(fonts/BebasNeue.otf);}
 
     
     html {
@@ -148,29 +148,37 @@ get in contact if you have any questions, happy to answer them if appropriate :)
 </style>
 <script type="text/javascript"> 
     
-    function updateUI() {
+    function updateUI() { 
         
-        document.getElementById('pScore1').innerHTML = localStorage.getItem('pScore1');
-        document.getElementById('pName1').innerHTML = localStorage.getItem('pName1');
-        document.getElementById('pScore2').innerHTML = localStorage.getItem('pScore2');
-        document.getElementById('pName1').innerHTML = localStorage.getItem('pName1');
-        document.getElementById('pName2').innerHTML = localStorage.getItem('pName2');
-        document.getElementById('round').innerHTML = localStorage.getItem('round');
+        
+        let playerName1 = localStorage.getItem('pName1'); 
+        let playerName2 = localStorage.getItem('pName2'); 
+        
+        // adding (L) or (W) 
+        if (localStorage.getItem('pLosers1') == "true" || localStorage.getItem('pLosers2') == "true") {
+            var loserStr1 = (localStorage.getItem('pLosers1') == "true")  ? ' (L)' : ' (W)';
+            var loserStr2 = (localStorage.getItem('pLosers2') == "true")  ? ' (L)' : ' (W)';
+            
+            playerName1 = playerName1 + loserStr1; 
+            playerName2 = playerName2 + loserStr2; 
+        }
+        
+        document.getElementById('pName1').innerHTML = playerName1;
+        document.getElementById('pName2').innerHTML = playerName2;
+        
         document.getElementById('pSponsor1').innerHTML = localStorage.getItem('pSponsor1');
         document.getElementById('pSponsor2').innerHTML = localStorage.getItem('pSponsor2');
         
-        if (localStorage.getItem('pSponsor1') === '') {
-            document.getElementById('pSpace1').style.display = 'none';
-        } else {
-            document.getElementById('pSpace1').style.display = 'block'; 
-        }
-        if (localStorage.getItem('pSponsor2') === '') {
-            document.getElementById('pSpace2').style.display = 'none'; 
-        } else {  
-            document.getElementById('pSpace2').style.display = 'block'; 
-        }
+        document.getElementById('pScore1').innerHTML = localStorage.getItem('pScore1');
+        document.getElementById('pScore2').innerHTML = localStorage.getItem('pScore2');
+        
+        document.getElementById('round').innerHTML = localStorage.getItem('round');
 
-}
+        // hides the space between the two things if sponsor is empty
+        document.getElementById('pSpace1').style.display = (localStorage.getItem('pSponsor1') === '') ? 'none' : 'block'; 
+        document.getElementById('pSpace2').style.display = (localStorage.getItem('pSponsor2') === '') ? 'none' : 'block'; 
+    }
+    
 
     function init(){
         

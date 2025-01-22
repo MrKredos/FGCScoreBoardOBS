@@ -11,6 +11,8 @@ pSponsor1
 pSponsor2
 pState1
 pState2
+pLosers1
+pLosers2
 cName1
 cName2
 cSponsor1
@@ -55,6 +57,13 @@ too many names stored?
     input[type=number]::-webkit-inner-spin-button {
         opacity: 1
     }   
+    .checkboxLabel {
+        font-size: 12px; 
+    }
+    
+    .checkbox {
+        margin-right: 0px; 
+    }
     
 
 </style>
@@ -93,6 +102,10 @@ too many names stored?
         document.getElementById('cSponsor2').value = localStorage.getItem('cSponsor2');
         document.getElementById('round').value = localStorage.getItem('round');
         
+        document.getElementById('pLosers1').checked = (localStorage.getItem('pLosers1') == "true") ? true : false; 
+        document.getElementById('pLosers2').checked = (localStorage.getItem('pLosers2') == "true") ? true : false;
+        
+        
     }
     
     function saveRecords() { //saves input from text box to local storage
@@ -109,6 +122,8 @@ too many names stored?
         localStorage.setItem('cSponsor2', document.getElementById('cSponsor2').value);
         localStorage.setItem('round', document.getElementById('round').value);
         localStorage.setItem('msg', document.getElementById('msg').value);
+        localStorage.setItem('pLosers1', document.getElementById('pLosers1').checked);
+        localStorage.setItem('pLosers2', document.getElementById('pLosers2').checked);
         
         let debugText = "Saved"; 
         count++; 
@@ -126,6 +141,8 @@ too many names stored?
         localStorage.setItem('round', "Tournament"); 
         localStorage.setItem('pScore1', "0"); 
         localStorage.setItem('pScore2', "0"); 
+        localStorage.setItem('pLoser1', "false");
+        localStorage.setItem('pLoser2', "false"); 
         document.getElementById('debug').innerHTML = "Local storage deleted";
         updateUI(); 
         count = 0; 
@@ -143,6 +160,12 @@ too many names stored?
         swap('pScore1', 'pScore2'); 
         swap('pSponsor1', 'pSponsor2'); 
         swap('pName1', 'pName2'); 
+        
+        let tempSwap = document.getElementById('pLosers1').checked;
+        
+        localStorage.setItem('pLosers1', document.getElementById('pLosers2').checked); 
+        localStorage.setItem('pLosers2', tempSwap);
+        
         /*
         let tempSwap = document.getElementById('pScore1').value;  
         //console.log(document.getElementById('pScore1').value); 
@@ -156,13 +179,22 @@ too many names stored?
         document.getElementById('debug').innerHTML = "Players Swaped";
         count = 0; 
     }
+    
+    function swapComms() {
+        swap('cSponsor1', 'cSponsor2'); 
+        swap('cName1', 'cName2');
+        
+        updateUI();
+        document.getElementById('debug').innerHTML = "Comms Swaped";
+        count = 0; 
+    }
 
     function swap(first, second) { //js doesn't have reference, so we will just do it here. 
         let tempSwap = document.getElementById(first).value; 
 
         localStorage.setItem(first, document.getElementById(second).value); 
         localStorage.setItem(second , tempSwap);
-
+        
         return; 
     }
 
@@ -180,16 +212,23 @@ too many names stored?
             <div id="scoreboard"> 
                 <div id="areaPlayer1">
                     Player 1
-                    
                     <input type="text" id="pSponsor1" class="sponsor">
                     <input type="text" id="pName1" class="name" placeholder="P1 NAME">
                     <input type="number" id="pScore1" class="score" placeholder="0">
+                    <input type="checkbox" id="pLosers1" class="checkbox"> 
+                    <label class="checkboxLabel" for="pLosers1">(L)</label>
                 </div>   
                 <div id="areaPlayer2">
                     Player 2
                     <input type="text" id="pSponsor2" class="sponsor">
                     <input type="text" id="pName2" class="name" placeholder="P2 NAME">
                     <input type="number" id="pScore2" class="score" placeholder="0">
+                    <input type="checkbox" id="pLosers2" class="checkbox"> 
+                    <label class="checkboxLabel" for="pLosers2">(L)</label>
+                </div>
+                <div>
+                    <input type="submit" id="pSwap" value="Swap Players" onClick="swapPlayers()">
+                    <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()">
                 </div>
                 <div>
                 Match
@@ -202,7 +241,7 @@ too many names stored?
                     <option value="Losers Semi Finals">Losers Semi Finals</option>   
                     <option value="Winners Finals">Winners Finals</option>
                     <option value="Losers Finals">Losers Finals</option>
-                    <option value="Grand Final Reset">Grand Finals</option>
+                    <option value="Grand Final">Grand Finals</option>
                     <option value="Grand Final Reset">Grand Final Reset</option>
                     <option value="Exhibition">Exhibition</option> 
                     <option value="Money Match">Money Match</option>  
@@ -220,14 +259,21 @@ too many names stored?
                 <input type="text" id="cName2" class="name" placeholder="C2 NAME">
             </div>
             <div>
+                <input type="submit" id="cSwap" value="Swap Comms" onClick="swapComms()">
+            </div>
+            <div>
             BRB Screen Message 
                 <input type="text" id="msg" placeholder="for brb screen WIP"> 
             </div>
             <div id="buttons">
                 <input type="submit" id="save" value="Save" onClick="saveRecords()">
-                <input type="submit" id="swap" value="Swap Players" onClick="swapPlayers()">
-                <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()">
+                
+                
                 <input type="submit" id="delete" value="Delete Records" onClick="deleteLocalStorage()">
+            </div>
+            
+            <div>
+                <input type="submit" id="CHANGEME" value="Delete Records" onClick="deleteLocalStorage()">
             </div>
         </div>
         <div id="debug"></div>

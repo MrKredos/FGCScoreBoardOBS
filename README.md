@@ -22,6 +22,8 @@ pSponsor1
 pSponsor2
 pSponsor1
 pSponsor2
+pLosers1
+pLosers2
 cName1
 cName2
 cSponsor1
@@ -29,6 +31,16 @@ cSponsor2
 round
 
 ## Progress
+v2.2: 
+- adjusted positioning of buttons
+- added losers button + functionality   
+  - swap works + delete + save
+
+need to do:
+- socials tag (twitter)
+- swap comms 
+- bracket link
+
 v2.1:
 - panel.html minor QOL changes
   - score buttons for changing scores, opacity = 1. 
@@ -51,7 +63,7 @@ v1.0:
 - panel and gameOverlay interact now. 
 - saving records works (just for score at the moment, implementing everything else soon)
 
-## TODO LIST:
+## WISHLIST:
 - Everything
 - Import database/JSON/excel/text
 - Wishlist: 
