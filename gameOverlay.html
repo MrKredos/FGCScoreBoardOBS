@@ -116,6 +116,44 @@ get in contact if you have any questions, happy to answer them if appropriate :)
     }
     /* background-color: rgba(0, 0, 0, 0.3); */
     
+    #c1Container, #c2Container {
+        display: block;
+    }
+    
+    #c1Parallelogram, #c2Parallelogram {
+        position: absolute; 
+        left: 50px;
+        top: 900px;
+        height: 35px;
+        width: 250px;
+        transform: skew(135deg);
+        background: #555;
+        background-image: linear-gradient(to right, #2D1B28, #7602B6);
+    }
+    
+    #c2Parallelogram {
+        transform: skew(45deg);
+        left: 1630px;
+        background-image: linear-gradient(to left, #2D1B28, #7602B6);
+        
+    }
+    
+    #c1Comms, #c2Comms {
+        position: absolute; 
+        left: 30px;
+        top: 900px;
+        height: 35px;
+        width: 250px;
+        font-size: 25px; 
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+    
+    #c2Comms {
+        left: 1650px;
+        justify-content: left; 
+    }
     
     #roundTrapezoid {
         --p: 45px; /* control the shape (can be percentage) */
@@ -176,7 +214,12 @@ get in contact if you have any questions, happy to answer them if appropriate :)
 
         // hides the space between the two things if sponsor is empty
         document.getElementById('pSpace1').style.display = (localStorage.getItem('pSponsor1') === '') ? 'none' : 'block'; 
-        document.getElementById('pSpace2').style.display = (localStorage.getItem('pSponsor2') === '') ? 'none' : 'block'; 
+        document.getElementById('pSpace2').style.display = (localStorage.getItem('pSponsor2') === '') ? 'none' : 'block';
+
+        document.getElementById('c1Container').style.display = (localStorage.getItem('cName1') === '') ? 'none' : 'block';
+        document.getElementById('c2Container').style.display = (localStorage.getItem('cName2') === '') ? 'none' : 'block';
+        document.getElementById('cName1').innerHTML = localStorage.getItem('cName1');
+        document.getElementById('cName2').innerHTML = localStorage.getItem('cName2');
     }
     
 
@@ -184,7 +227,7 @@ get in contact if you have any questions, happy to answer them if appropriate :)
         
         window.addEventListener("storage", function (e) {
         // do your checks to detect\
-        updateUI() 
+        updateUI()
         document.getElement
         // changes in "e1", "e2" & "e3" here
         }, false);
@@ -194,6 +237,8 @@ get in contact if you have any questions, happy to answer them if appropriate :)
         // the console.
         console.log(JSON.parse(window.localStorage.getItem("sampleList")));
         });
+        updateUI();
+        
     }
 
 
@@ -204,7 +249,9 @@ get in contact if you have any questions, happy to answer them if appropriate :)
     <head>
         <meta charset="UTF-8" />
         <title>Title</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
+    
     
     <body onLoad="init()">
         
@@ -241,7 +288,26 @@ get in contact if you have any questions, happy to answer them if appropriate :)
                 <div id="pScore2">1</div>
             </div>
         </div>
-
+        
+        <div id="c1Container">
+            
+            <div id="c1Parallelogram"></div>
+            <div id="c1Comms">
+                
+                <div id="cName1">Comms 1</div>
+                &ensp;
+                <i class="fa fa-microphone" style="color:lightgrey;"></i>
+            </div>
+        </div>
+        
+        <div id="c2Container">
+            <div id="c2Parallelogram"></div>
+            <div id="c2Comms">
+                <i class="fa fa-microphone" style="color:lightgrey"></i>
+                &ensp;
+                <div id="cName2">Comms 2</div>
+            </div>
+        </div>
   
     
         

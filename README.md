@@ -14,23 +14,34 @@ Note: Tested with OBS 31.0.0-rc1, should theoretically work with most versions o
 3. Should be good to go from there. (add screenshots for steps)
 
 ## List of Variable names used in localstorage
-pName1
-pName2
-pScore1
-pScore2
-pSponsor1
-pSponsor2
-pSponsor1
-pSponsor2
-pLosers1
-pLosers2
-cName1
-cName2
-cSponsor1
-cSponsor2
-round
+- pName1
+- pName2
+- pScore1
+- pScore2
+- pSponsor1
+- pSponsor2
+- pSponsor1
+- pSponsor2
+- pCharacter1 //UNUSED FOR NOW
+- pCharacter2 //UNUSED FOR NOW
+- pLosers1
+- pLosers2
+- cName1
+- cName2
+- cSponsor1
+- cSponsor2
+- round
+- game
+- eName // event name
+- eNumber // event interation number 
+
 
 ## Progress
+v2.3 
+- game overlay comms functionality 
+  - hides itself if no comms
+- also now using font-awesome 4, occasionally. 
+
 v2.2: 
 - adjusted positioning of buttons
 - added losers button + functionality   
