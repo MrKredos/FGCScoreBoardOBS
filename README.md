@@ -1,7 +1,7 @@
 # FGCScoreBoardOBS
 
-Uses localStorage in OBS browser to interact with browser sources. Less hassle of interacting and parsing a JSON/excel/text file. 
-Scoreboard for fighting game tournaments, as a html file used for OBS. I do not plan on including 
+Uses localStorage in OBS browser to interact with browser sources. ~~Less hassle of interacting and parsing a JSON/excel/text file.~~ edit: yeah nah I've got no clue what I'm saying.
+Scoreboard for fighting game tournaments, as a html file used for OBS.
 
 This will be useful for people who run offline tournaments, and online tournaments too but please note this is more designed and built for offline. 
 
@@ -37,6 +37,22 @@ Note: Tested with OBS 31.0.0-rc1, should theoretically work with most versions o
 
 
 ## Progress
+v2.4 
+panel.html
+- api reading from start.gg (very barebones, needs to be improved)
+  - auto filling, barebones implementation
+    - type in exact name and it will pick up pronoun and prefix. you are unable to change pronoun or prefix once adding, something to think about. 
+- quality of life changes to panel.html
+  - added pronoun usage
+  - buttons for deleting players and commentators, separate. 
+- examples of usage in om3ga folder and trouble in parradise folders
+
+TO DO:
+- maybe change the variable names to match start.gg? 
+- adding the start.gg api key manually
+- searching for indiviual players instead of typing manually
+
+
 v2.3 
 - game overlay comms functionality 
   - hides itself if no comms
@@ -89,5 +105,5 @@ v1.0:
     - Local time display (togglable) 
   - Insta replays 
   - Challonge api implementation 
-  - Start.gg api implementation
+  - Start.gg api implementation NEARLY THERE
   - 2v2s (can probably do without)

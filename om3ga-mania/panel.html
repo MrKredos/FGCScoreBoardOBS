@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 
 <!--
+THIS VERSION IS STRICTLY NOT GOING TO BE UPDATED, BUT IS WHAT I USED FOR OM3GA! 
+Keeping this just as an example and for safe keeping. 
+(update with VODS soon, remind me if I don't update this in a months time :)
+
 vars i'll be using
 
 pName1
@@ -254,13 +258,13 @@ too many names stored?
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer PUT API HERE" , //temporary, needs to change
+                Authorization: "Bearer PUT API HERE" , //temporary, needs to ch ange
             },
 
             body: JSON.stringify({
                 query: "query eventQuery ($tourneySlug: String) { tournament(slug: $tourneySlug) { participants(query: {perPage: 500}) { nodes { prefix gamerTag prefix user { genderPronoun twitter: authorizations(types:[TWITTER]) { externalUsername } } } } }}", 
                 variables: {
-                    tourneySlug: 'omega-3-omegamania' // ALSO NEEDS TO CHANGE
+                    tourneySlug: 'omega-3-omegamania'
                 },
             }),
         });
