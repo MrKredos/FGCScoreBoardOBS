@@ -15,6 +15,8 @@ pLosers1
 pLosers2
 pPronoun1
 pPronoun2
+pTwitter1
+pTwitter2
 cName1
 cName2
 cSponsor1
@@ -24,14 +26,6 @@ round
 pCharacter1 UNUSED FOR NOW
 pCharacter2 UNUSED FOR NOW
 
-how to store values.
-case: everytime a player shows up, we want to add them to the database.
-resolution: add everyone via start.gg, solves having to store things locally.
-issue: if people  haven't signed up, we still want to be able to add them.
-
-CHECK NAME ONLY
-if name is added, check with json database. if it doesn't exist, add them.
-
 some minor issues: 
 what if name is mispelled, multiple of the same name will show 
     rectified if we can delete single entries
@@ -40,11 +34,15 @@ too many names stored?
         count how many times it's been used? might make things more complicated
 -->
 <style> 
-    .score, .sponsor {
+    h1 {
+        font-size: 15px; 
+        margin: 1px;
+    }
+    .score, .sponsor{
         width: 30px;
     }
     
-    .name {
+    .name, .twitter {
         width: 100px; 
     }
     
@@ -54,8 +52,11 @@ too many names stored?
     
     .delete {
         background-color: lightcoral;
-    }
+    }  
     
+    #grabPlayers {
+        background-color: lightblue; 
+    }
     
     .pronoun {
         width: 30px; 
@@ -71,6 +72,7 @@ too many names stored?
     .checkbox {
         margin-right: 0px; 
     }
+    
     
 
 </style>
@@ -92,8 +94,6 @@ too many names stored?
         
     }
 
-
-
     function updateUI() {
         document.getElementById('pScore1').value = localStorage.getItem('pScore1');
         document.getElementById('pScore2').value = localStorage.getItem('pScore2');
@@ -103,6 +103,8 @@ too many names stored?
         document.getElementById('pSponsor2').value = localStorage.getItem('pSponsor2');
         document.getElementById('pPronoun1').value = localStorage.getItem('pPronoun1');
         document.getElementById('pPronoun2').value = localStorage.getItem('pPronoun2');
+        document.getElementById('pTwitter1').value = localStorage.getItem('pTwitter1');
+        document.getElementById('pTwitter2').value = localStorage.getItem('pTwitter2');
         document.getElementById('cName1').value = localStorage.getItem('cName1');
         document.getElementById('cName2').value = localStorage.getItem('cName2');
         document.getElementById('cSponsor1').value = localStorage.getItem('cSponsor1');
@@ -124,6 +126,8 @@ too many names stored?
         localStorage.setItem('pSponsor2', document.getElementById('pSponsor2').value);
         localStorage.setItem('pPronoun1', document.getElementById('pPronoun1').value);
         localStorage.setItem('pPronoun2', document.getElementById('pPronoun2').value);
+        localStorage.setItem('pTwitter1', document.getElementById('pTwitter1').value);
+        localStorage.setItem('pTwitter2', document.getElementById('pTwitter2').value);
         localStorage.setItem('cName1', document.getElementById('cName1').value);
         localStorage.setItem('cName2', document.getElementById('cName2').value);
         localStorage.setItem('cSponsor1', document.getElementById('cSponsor1').value);
@@ -145,7 +149,6 @@ too many names stored?
             }
         }
         document.getElementById('debug').innerHTML = debugText; 
-        searchObject(); 
         //load(); 
     }
 
@@ -171,6 +174,8 @@ too many names stored?
         localStorage.setItem('pName2', ""); 
         localStorage.setItem('pPronoun1', ""); 
         localStorage.setItem('pPronoun2', ""); 
+        localStorage.setItem('pTwitter1', ""); 
+        localStorage.setItem('pTwitter2', "");
         localStorage.setItem('pLoser1', "false");
         localStorage.setItem('pLoser2', "false"); 
         document.getElementById('debug').innerHTML = "Player Storage Deleted";
@@ -201,6 +206,8 @@ too many names stored?
         swap('pScore1', 'pScore2'); 
         swap('pSponsor1', 'pSponsor2'); 
         swap('pName1', 'pName2'); 
+        //swap('pPronoun1', 'pPronoun2');
+        //swap('pTwitter1', 'pTwitter2'); 
         
         let tempSwap = document.getElementById('pLosers1').checked;
         
@@ -254,7 +261,7 @@ too many names stored?
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer PUT API HERE" , //temporary, needs to change
+                Authorization: "Bearer REMOVE ME" , //temporary, needs to change
             },
 
             body: JSON.stringify({
@@ -272,14 +279,19 @@ too many names stored?
         const participants = data.data.tournament.participants.nodes || [];
 
         // Extract name (gamerTag) and pronoun
-        const playerArray = participants.map(player => ({
-            pName: player.gamerTag,
-            pPronoun: player.user.genderPronoun || "", 
-            pSponsor: player.prefix || "" 
-        }));
-
+        const playerArray = participants.map(player => {
+            console.log("Player data:", player); // Debugging log
+            return {
+                pName: player.gamerTag,
+                pPronoun: player.user.genderPronoun || "", 
+                pSponsor: player.prefix || "",
+                pTwitter: player.user.twitter?.[0].externalUsername
+            };
+        });
+        
         // Save to localStorage
         localStorage.setItem("playersArray", JSON.stringify(playerArray));
+        console.log(playerArray[9]); 
         document.getElementById('debug').innerHTML = "Fetch completed";
     }
               
@@ -295,11 +307,15 @@ too many names stored?
 
 
     function searchObject() { // iterate through players array looking
+        localStorage.setItem('pName1', document.getElementById('pName1').value);
+        localStorage.setItem('pName2', document.getElementById('pName2').value);
+        document.getElementById('pName1').value = localStorage.getItem('pName1');
+        document.getElementById('pName2').value = localStorage.getItem('pName2');
+        
         
         let playersArray = JSON.parse(localStorage.getItem("playersArray")) || [];
         //console.log(playersArray); 
-
-
+        let i = false;
         for (const key of playersArray) {
             for (let playerNumber = 1; playerNumber <= 2; playerNumber++) {
                 let storedPName = localStorage.getItem('pName' + playerNumber);
@@ -309,10 +325,25 @@ too many names stored?
                     // Save additional player details to localStorage
                     localStorage.setItem('pSponsor' + playerNumber, key.pSponsor);
                     localStorage.setItem('pPronoun' + playerNumber, key.pPronoun);
+                    localStorage.setItem('pTwitter' + playerNumber, key.pTwitter); 
                     updateUI(); // Call update function
-                }
+                    i = true;
+                    count = 0; 
+                    document.getElementById('debug').innerHTML = "worked";
+                }            
             }
-        }         
+        }
+        if (i == false) {
+            document.getElementById('debug').innerHTML = "Failed (name must match start.gg)";
+        }
+        count++; 
+        let debugText = ""; 
+        if (count > 0) {
+            for (let j = 0; j < count; j++) { // adds an '!' every consecutive time you press save. 
+                debugText += "!"; 
+            }
+        }
+        document.getElementById('debug').innerHTML += debugText;
     }
 
     function appendObject(playerName) { // replaces objects and adds objects
@@ -325,15 +356,14 @@ too many names stored?
         
     }
     */
-    
 
     // Put the object into storage
-    localStorage.setItem('patmeharder', JSON.stringify(player));
+    //localStorage.setItem('patmeharder', JSON.stringify(player));
 
     // Retrieve the object from storage
-    var retrievedObject = localStorage.getItem('patmeharder');
+    //var retrievedObject = localStorage.getItem('patmeharder');
 
-    console.log('retrievedObject: ', JSON.parse(retrievedObject));
+    //console.log('retrievedObject: ', JSON.parse(retrievedObject));
     
 </script>
 
@@ -346,11 +376,12 @@ too many names stored?
     <body onLoad="init()">
         <div id="board">
             <div id="scoreboard"> 
-                
+                <h1><b>SCOREBOARD PANEL</b> by @patmeharder_ </h1>
                 <div>
                     Match
                     <select name="round" id="round">
                     <option value="Tournament">Tournament</option>
+                    <option value="Casuals">Casuals</option>
                     <option value="Winners Pools">Winners Pools</option>
                     <option value="Losers Pools">Losers Pools</option>
                     <option value="Winners Top 8">Winners Top 8</option>
@@ -364,49 +395,43 @@ too many names stored?
                     <option value="Money Match">Money Match</option>  
                     </select>
                 </div>
-                <div >
+                <div>
                     Game 
                     <select name="game" id="game">
-                    <option value="CHANGE GAME PLS">CHANGE GAME PLS</option>
-                    <option value="Wii Boxing">Wii Boxing</option>
-                    <option value="Granblue Fantasy Versus: Rising">Granblue Fantasy Versus: Rising</option>
-                    <option value="Smash Ultimate Singles">Smash Ultimate Singles</option>
-                    <option value="Rivals of Aether II">Rivals of Aether II</option>
-                    <option value="Guilty Gear: STRIVE">Guilty Gear: STRIVE</option>
-                    <option value="King of Fighters XV">King of Fighters XV</option>   
-                    <option value="Boomerang Fu">Boomerang Fu</option>
-                    <option value="Mavel Vs. Capcom 2">Mavel Vs. Capcom 2</option>
-                    <option value="Under Night In-Birth II Sys:Celes">Under Night In-Birth II Sys:Celes</option>
-                    <option value="Street Fighter 6">Street Fighter 6</option>
-                    <option value="Guilty Gear Xrd Rev 2">Guilty Gear Xrd Rev 2</option> 
-                    <option value="MUGEN">MUGEN</option> 
-                    <option value="Tekken 8">Tekken 8</option>  
+                        <option value="TEKKEN 8">TEKKEN 8</option>
+                        <option value="Tekken 8">TEKKEN 7</option>
+                        <option value="Tekken 8">TEKKEN TAG TOURNAMENT 2</option>  
+                        <option value="Tekken 8">Street Fighter 6</option>  
+                    
                     </select>
                 </div>
                 
             <div id="areaPlayer1">
-                    P1
-                    <input type="text" id="pSponsor1" class="sponsor" placeholder="prefix">
-                    <input type="text" id="pName1" class="name" placeholder="P1 NAME">
-                    <input type="number" id="pScore1" class="score" placeholder="0">
-                    <input type="text" id="pPronoun1" class="pronoun" placeholder="he/him">
-                    <input type="checkbox" id="pLosers1" class="checkbox"> 
-                    <label class="checkboxLabel" for="pLosers1">(L)</label>
-                </div>   
-                <div id="areaPlayer2">
-                    P2
-                    <input type="text" id="pSponsor2" class="sponsor" placeholder="prefix">
-                    <input type="text" id="pName2" class="name" placeholder="P2 NAME">
-                    <input type="number" id="pScore2" class="score" placeholder="0">
-                    <input type="text" id="pPronoun2" class="pronoun" placeholder="he/him">
-                    <input type="checkbox" id="pLosers2" class="checkbox"> 
-                    <label class="checkboxLabel" for="pLosers2">(L)</label>
-                </div>
-                <div>
-                    <input type="submit" id="pSwap" value="Swap Players" onClick="swapPlayers()">
-                    <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()">
-                    <input type="submit" class="delete" value="Delete Players" onClick="deletePlayerStorage()">
-                </div>
+                P1
+                <input type="text" id="pSponsor1" class="sponsor" placeholder="prefix">
+                <input type="text" id="pName1" class="name" placeholder="P1 NAME">
+                <input type="number" id="pScore1" class="score" placeholder="0">
+                <input type="text" id="pPronoun1" class="pronoun" placeholder="he/him">
+                <input type="text" id="pTwitter1" class="twitter" placeholder="twitter">
+                <input type="checkbox" id="pLosers1" class="checkbox"> 
+                <label class="checkboxLabel" for="pLosers1">(L)</label>
+            </div>   
+            <div id="areaPlayer2">
+                P2
+                <input type="text" id="pSponsor2" class="sponsor" placeholder="prefix">
+                <input type="text" id="pName2" class="name" placeholder="P2 NAME">
+                <input type="number" id="pScore2" class="score" placeholder="0">
+                <input type="text" id="pPronoun2" class="pronoun" placeholder="he/him">
+                <input type="text" id="pTwitter2" class="twitter" placeholder="twitter">
+                <input type="checkbox" id="pLosers2" class="checkbox"> 
+                <label class="checkboxLabel" for="pLosers2">(L)</label>
+            </div>
+            <div>
+                <input type="submit" id="pSwap" value="Swap Players" onClick="swapPlayers()">
+                <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()">
+                <input type="submit" class="delete" value="Delete Players" onClick="deletePlayerStorage()">
+                <input type="submit" id="grabPlayers" value="Grab start.gg Details" onClick="searchObject()">
+            </div>
 
             </div>
             <div id="commentator1">
@@ -426,9 +451,10 @@ too many names stored?
                 <input type="submit" id="cSwap" value="Swap Comms" onClick="swapComms()">
                 <input type="submit" class="delete" value="Delete Commentators" onClick="deleteCommentatorStorage()">
             </div>
+
             <div>
             BRB Screen Message 
-                <input type="text" id="msg" placeholder="for brb screen WIP"> 
+                <input type="text" id="msg" placeholder="WIP NOT WORKING"> 
             </div>
             <div id="buttons">
                 <input type="submit" id="save" value="Save" onClick="saveRecords()">
@@ -438,13 +464,11 @@ too many names stored?
             
 
             
-            <!--
             <div id="api">
                 <input type="password" id="api-key" placeholder="start.gg key TEMP"> 
                 <input type="submit" id="api-save" value="Save" onClick="apiKeySubmitted()">
                 <input type="submit" id="test1" value="TEST" onClick="testApi()">
             </div>
-            --> 
 
         </div>
         <div id="debug"></div>
@@ -455,18 +479,22 @@ too many names stored?
             <ul>
                 <li>Hitting Enter submits/saves.</li>
                 <li>Tab and Tab+Shift to move without using mouse.</li>
-                <li>If you're gonna leave with nobody to replace, put on player cam/crowd cam. </li>
-                <li>Auto fill works, as long as correct spelling and punctuation applied. </li>
                 <li><strong>/predictions</strong> in the chat to setup predictions </li>
-                <li>If anything fails please call for Pat or any of the exec team!</li>
+                <li>If anything fails, good luck (call one of the organisers)</li>
+            </ul>
+            Checklist: 
+            <ul>
+                <li>!bracket link update</li>
+                <li>start.gg/trouble-in-parradise-XX/event/tekken-8</li>
             </ul>
             
         </div>
         <div>
-            <div>DO NOT TOUCH :)</div>
+            <div>DO NOT TOUCH (not working anyways)</div>
             <input type="submit" class="delete" value="Fetch Start.gg participants" onClick="testApi()">
             <input type="submit" class="delete" value="Delete ALL Records" onClick="deleteLocalStorage()">
         </div>
+
         
     </body>
 </html>

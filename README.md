@@ -14,31 +14,44 @@ Note: Tested with OBS 31.0.0-rc1, should theoretically work with most versions o
 3. Should be good to go from there. (add screenshots for steps)
 
 ## List of Variable names used in localstorage
-- pName1
-- pName2
-- pScore1
-- pScore2
-- pSponsor1
-- pSponsor2
-- pSponsor1
-- pSponsor2
-- pCharacter1 //UNUSED FOR NOW
-- pCharacter2 //UNUSED FOR NOW
-- pLosers1
-- pLosers2
-- cName1
-- cName2
-- cSponsor1
-- cSponsor2
-- round
-- game
-- eName // event name
-- eNumber // event interation number 
+```
+pName1
+pName2
+pScore1
+pScore2
+pSponsor1
+pSponsor2
+pSponsor1
+pSponsor2
+pCharacter1 //UNUSED FOR NOW
+pCharacter2 //UNUSED FOR NOW
+pLosers1
+pLosers2
+cName1
+cName2
+cSponsor1
+cSponsor2
+round
+game
+eName // event name
+eNumber // event interation number 
+```
 
+```
+Progress
+v2.5 panel.html
+- added "Grab start.gg details" buton
+    - save button no longer picks up these details. 
+- ui changes
+    - twitter box smaller
+    - colour on fetch requests
+- created halftone filter
+    - css/halftone.css
+    - coloured and b&w
+- folder layout adjusted 
+    - cleaner, examples for people who want to play around with some stuff
 
-## Progress
-v2.4 
-panel.html
+v2.4 panel.html
 - api reading from start.gg (very barebones, needs to be improved)
   - auto filling, barebones implementation
     - type in exact name and it will pick up pronoun and prefix. you are unable to change pronoun or prefix once adding, something to think about. 
@@ -46,12 +59,6 @@ panel.html
   - added pronoun usage
   - buttons for deleting players and commentators, separate. 
 - examples of usage in om3ga folder and trouble in parradise folders
-
-TO DO:
-- maybe change the variable names to match start.gg? 
-- adding the start.gg api key manually
-- searching for indiviual players instead of typing manually
-
 
 v2.3 
 - game overlay comms functionality 
@@ -90,20 +97,29 @@ v1.0:
 - panel and gameOverlay interact now. 
 - saving records works (just for score at the moment, implementing everything else soon)
 
-## WISHLIST:
+```
+
+
+## TO DO:
+- maybe change the variable names to match start.gg? 
+- adding the start.gg api key manually
+- searching for indiviual players instead of typing manually
+- crew battle
+- 2v2s for mario kart world
+
+## WISHLIST: 
+- ~~Start.gg api implementation NEARLY THERE~~ done
 - Everything
 - Import database/JSON/excel/text
+    - Challonge api next
 - Wishlist: 
   - ~~1v1s~~
   - Display top 8 bracket, or whole bracket
     - Whole bracket sounds a little too complicated, but worth the challenge
-  - Docker will change depending on the scene shown. 
   - Exhibitions
     - Not deathmatches but like team vs team stuff, maybe up to 20 people per team?
-      - Deathmatches can use the 1v1s page
     - Similar to how Mildsome does his 3S East vs West series (https://www.youtube.com/watch?v=OsRCyU94hxk) 
     - Local time display (togglable) 
   - Insta replays 
   - Challonge api implementation 
-  - Start.gg api implementation NEARLY THERE
   - 2v2s (can probably do without)
