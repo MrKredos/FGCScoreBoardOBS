@@ -1,0 +1,297 @@
+<!doctype html>
+
+<style>
+    @font-face {
+        font-family: "AkiraExpanded";
+        src: url(fonts/AkiraExpanded.otf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    body {
+        /*background-image: url(images/background.png);*/
+        background-color: rgba(0, 0, 0, 0.5);
+        font-family: "Bebas Neue";
+    }
+    .square {
+        position: absolute;
+        height: 112px;
+        width: 693px;
+    }
+    #chromBox {
+        top: 0px;
+        left: 266px;
+        background-color: #665dce;
+        overflow: hidden;
+    }
+
+    #chrom {
+        position: relative;
+        top: -115px;
+        left: 0px;
+        filter: grayscale();
+        opacity: 0.3;
+    }
+
+    #cfalBox {
+        background-color: #c6bb1b;
+        top: 0px;
+        left: 958px;
+        overflow: hidden;
+    }
+    #falcon {
+        position: relative;
+        top: -135px;
+        left: 181px;
+        filter: grayscale();
+        opacity: 0.3;
+    }
+
+    #score1,
+    #score2 {
+        font-family: "AkiraExpanded";
+        position: absolute;
+        top: -12px;
+        left: 840px;
+        font-size: 112px;
+        color: rgba(0, 0, 0, 0.5);
+        width: 97px;
+        height: 128px;
+        display: flex;
+        align-items: right;
+        justify-content: right;
+    }
+
+    #score2 {
+        left: 977px;
+        justify-content: left;
+    }
+    #pContainer1,
+    #pContainer2 {
+        position: absolute;
+        top: 5px;
+        left: 267px;
+        height: 110px;
+        width: 584px;
+        /*
+        border: 2px solid black;
+        outline-style: solid;
+        outline-color: red;
+        */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e6e4ff;
+    }
+
+    #pContainer2 {
+        left: 1066px;
+        color: #fffddf;
+    }
+
+    .space {
+        font-size: 85px;
+    }
+
+    #pSponsor1,
+    #pSponsor2,
+    #pName1,
+    #pName2 {
+        font-size: 100px;
+    }
+    .player {
+        font-size: 30px;
+        font-family: "AkiraExpanded";
+    }
+    .team {
+        filter: drop-shadow(2px 2px black);
+    }
+
+    #t1,
+    #t2 {
+        color: #665dce;
+        position: absolute;
+        top: 150px;
+        filter: drop-shadow(-2px 2px #1b1281);
+    }
+
+    #t2 {
+        color: #c6bb1b;
+        position: absolute;
+        left: 0px;
+        width: 1920px;
+        text-align: right;
+        filter: drop-shadow(2px 2px #696201);
+    }
+</style>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+    </head>
+    <body onLoad="init()">
+        <div class="square" id="chromBox">
+            <img id="chrom" src="images/chrom.png" />
+        </div>
+        <div class="square" id="cfalBox">
+            <img id="falcon" src="images/captain.png" />
+        </div>
+        <div id="score1">
+            <div id="pScore1">0</div>
+        </div>
+        <div id="pContainer1">
+            <div id="pSponsor1"></div>
+            <div class="space" id="pSpace1">&ensp;</div>
+            <div id="pName1"></div>
+        </div>
+        <div id="roundContainer">
+            <div id="round"></div>
+        </div>
+
+        <div id="VS"></div>
+        <div id="score2">
+            <div id="pScore2">0</div>
+        </div>
+        <div id="pContainer2">
+            <div id="pSponsor2"></div>
+            <div class="space" id="pSpace2">&ensp;</div>
+            <div id="pName2"></div>
+        </div>
+        <br />
+        <div id="teamsContainer"></div>
+        <div id="debug"></div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    function updateUI() {
+        let playerName1 = localStorage.getItem("pName1");
+        let playerName2 = localStorage.getItem("pName2");
+
+        // adding (L) or (W)
+        if (localStorage.getItem("pLosers1") == "true" || localStorage.getItem("pLosers2") == "true") {
+            var loserStr1 = localStorage.getItem("pLosers1") == "true" ? " [L]" : " [W]";
+            var loserStr2 = localStorage.getItem("pLosers2") == "true" ? " [L]" : " [w]";
+
+            playerName1 = playerName1 + loserStr1;
+            playerName2 = playerName2 + loserStr2;
+        }
+
+        document.getElementById("pName1").innerHTML = trimInput(playerName1);
+        document.getElementById("pName2").innerHTML = trimInput(playerName2);
+
+        document.getElementById("pSponsor1").innerHTML = trimInput(localStorage.getItem("pSponsor1"));
+        document.getElementById("pSponsor2").innerHTML = trimInput(localStorage.getItem("pSponsor2"));
+        /*
+        let score1 = ;
+        
+        //document.getElementById('debug').innerHTML = score1;
+        if (score1.length == 1) {
+            score1 = "0" + score1;
+        } else if (score1.length == 0 || score1.length == null) {
+            score1 = "00";
+        }
+        
+
+        let score2 = localStorage.getItem("pScore2");
+       
+        if (score2.length == 1) {
+            score2 = "0" + score2;
+        } else if (score2.length == 0 || score2.length == null) {
+            score2 = "00";
+        }
+        */
+
+        document.getElementById("pScore1").innerHTML = localStorage.getItem("pScore1");
+        document.getElementById("pScore2").innerHTML = localStorage.getItem("pScore2");
+
+        //document.getElementById("round").innerHTML = localStorage.getItem("round");
+        /*
+        let cName1 = localStorage.getItem("cName1");
+        let cName2 = localStorage.getItem("cName2");
+
+        if ((cName1 == null || cName1 == "") && (cName2 == null || cName2 == "")) {
+            document.getElementById("mic").style.display = "none";
+        } else {
+            document.getElementById("mic").style.display = "block";
+        }
+
+        document.getElementById("cName1").innerHTML = localStorage.getItem("cName1");
+        document.getElementById("cName2").innerHTML = localStorage.getItem("cName2");
+        */
+    }
+
+    function init() {
+        window.addEventListener(
+            "storage",
+            function (e) {
+                // do your checks to detect\
+                updateUI();
+                document.getElement;
+                // changes in "e1", "e2" & "e3" here
+            },
+            false
+        );
+
+        window.addEventListener("storage", () => {
+            // When local storage changes, dump the list to
+            // the console.
+            console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+        });
+        updateUI();
+    }
+
+    function trimInput(input) {
+        return input.length > 10 ? input.substring(0, 10) + "..." : input;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const data = JSON.parse(localStorage.getItem("teamsData"));
+        const container = document.getElementById("teamsContainer");
+
+        if (!data) {
+            //container.innerHTML = "<p>No team data found in localStorage.</p>";
+            //return;
+        }
+        /*
+        console.log(data);
+        console.log(data.teamsData);
+        */
+
+        // Function to build team section
+        function createTeam(teamName, players) {
+            const teamDiv = document.createElement("div");
+            teamDiv.classList.add("team");
+            teamDiv.id = teamName;
+            /*
+            const heading = document.createElement("h2");
+            heading.textContent = teamName;
+            teamDiv.appendChild(heading);
+            */
+
+            players.forEach((player) => {
+                const playerDiv = document.createElement("div");
+                playerDiv.classList.add("player");
+                playerDiv.id = teamName + "p" + (player.id + 1);
+                if (player.pLost !== true) {
+                    playerDiv.innerHTML = `
+                    <div id="${teamName}p${player.id + 1}Name">${(player.pSponsor || "") + " " + (player.pName || "")}</div> 
+                  `;
+                } else {
+                    playerDiv.innerHTML = `
+                    <div style="color: grey;" id="${teamName}p${player.id + 1}Name"><s>${(player.pSponsor || "") + " " + (player.pName || "")}</s></div> 
+                    <!-- <div id="${teamName}p${player.id + 1}Pronoun">${player.pPronoun || ""}</div>
+                    <div id="${teamName}p${player.id + 1}Sponsor">${player.pSponsor || ""}</div>
+                    <div id="${teamName}p${player.id + 1}Twitter">${player.pTwitter || ""}</div> -->
+                  `;
+                }
+
+                teamDiv.appendChild(playerDiv);
+            });
+
+            return teamDiv;
+        }
+
+        // Render both teams
+        container.appendChild(createTeam("t1", data.teamsData.teamA));
+        container.appendChild(createTeam("t2", data.teamsData.teamB));
+    });
+</script>

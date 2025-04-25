@@ -1,9 +1,11 @@
 # FGCScoreBoardOBS
 
-Uses localStorage in OBS browser to interact with browser sources. ~~Less hassle of interacting and parsing a JSON/excel/text file.~~ edit: yeah nah I've got no clue what I'm saying.
-Scoreboard for fighting game tournaments, as a html file used for OBS.
+Uses localStorage in OBS browser to interact with browser sources. Scoreboard for fighting game tournaments, as a html file used for OBS.
 
 This will be useful for people who run offline tournaments, and online tournaments too but please note this is more designed and built for offline. 
+
+FYI: The panel saves to localStorage, you can read localStorage to then create your own overlays using HTML and CSS. 
+Feel free to have a look at my examples for inspiration.
 
 ## How to set up
 Note: Tested with OBS 31.0.0-rc1, should theoretically work with most versions of OBS.
@@ -35,21 +37,61 @@ round
 game
 eName // event name
 eNumber // event interation number 
-```
 
+Crew battles:
+teamsData
+  playerIdCounter
+  names
+  teamsData
+    teamA/teamB
+      id
+      pName
+      pSponsor
+      pTwitter
+      pPronouns
 ```
+## Changelog
+```
+TO DO:
+- maybe change the variable names to match start.gg? 
+- adding the start.gg api key manually
+- searching for indiviual players instead of typing manually
+- crew battle
+- 2v2s for mario kart world
+
 Progress
+v2.6
+Add crew battle capabilities and half-tone.css filter for fun or fun (I kinda just ripped off https://leanrada.com/notes/pure-css-halftone/ huge props to them!).
+Crewbattle capabilities also added, however they are very barebones and needed to get them shipped in like 3 days. I will continue to work on it however. 
+
+panel.html/crewbattles-test.html (crewbattles-test.html is older version)
+- crew battle capabilities
+  - basic run down of added stuff
+    - toggle crew battles
+      - good so that it isn't shown all the time, especially if you're not using crews.
+    - add players, remove players buttons
+      - will remove for both sides, please keep in mind.
+    - auto saving
+      - no need for save button   
+    - reset all button
+      - removes details from localStorage
+    - death button 
+      - details 
+
+half-tone.css
+-
+
 v2.5 panel.html
 - added "Grab start.gg details" buton
-    - save button no longer picks up these details. 
+  - save button no longer picks up these details. 
 - ui changes
-    - twitter box smaller
-    - colour on fetch requests
+  - twitter box smaller
+  - colour on fetch requests
 - created halftone filter
-    - css/halftone.css
-    - coloured and b&w
+  - css/halftone.css
+  - coloured and b&w
 - folder layout adjusted 
-    - cleaner, examples for people who want to play around with some stuff
+  - cleaner, examples for people who want to play around with some stuff
 
 v2.4 panel.html
 - api reading from start.gg (very barebones, needs to be improved)
@@ -99,27 +141,18 @@ v1.0:
 
 ```
 
-
-## TO DO:
-- maybe change the variable names to match start.gg? 
-- adding the start.gg api key manually
-- searching for indiviual players instead of typing manually
-- crew battle
-- 2v2s for mario kart world
-
 ## WISHLIST: 
-- ~~Start.gg api implementation NEARLY THERE~~ done
 - Everything
+- ~~Start.gg api implementation NEARLY THERE~~
+- ~~1v1s~~
+- 2v2s
 - Import database/JSON/excel/text
-    - Challonge api next
-- Wishlist: 
-  - ~~1v1s~~
-  - Display top 8 bracket, or whole bracket
-    - Whole bracket sounds a little too complicated, but worth the challenge
-  - Exhibitions
-    - Not deathmatches but like team vs team stuff, maybe up to 20 people per team?
-    - Similar to how Mildsome does his 3S East vs West series (https://www.youtube.com/watch?v=OsRCyU94hxk) 
-    - Local time display (togglable) 
-  - Insta replays 
-  - Challonge api implementation 
-  - 2v2s (can probably do without)
+- Challonge API
+- Insta replays 
+- Display top 8 bracket, or whole bracket
+  - Whole bracket sounds a little too complicated, but worth the challenge
+- ~~Exhibitions~~
+  - ~~Not deathmatches but like team vs team stuff, maybe up to 20 people per team?~~
+  - ~~Similar to how Mildsome does his 3S East vs West series (https://www.youtube.com/watch?v=OsRCyU94hxk)~~
+  - ~~Local time display (togglable)~~
+

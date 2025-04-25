@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <!--
 vars i'll be using
@@ -33,187 +33,363 @@ too many names stored?
     doubt it'll reach that, otherwise we need to figure out how to cull names in future
         count how many times it's been used? might make things more complicated
 -->
-<style> 
+<style>
     h1 {
-        font-size: 15px; 
+        font-size: 15px;
         margin: 1px;
     }
-    .score, .sponsor{
+    .score,
+    .sponsor {
         width: 30px;
     }
-    
-    .name, .twitter {
-        width: 100px; 
+
+    .name,
+    .twitter {
+        width: 100px;
     }
-    
+
     #save {
-        background-color: lightgreen;    
+        background-color: lightgreen;
     }
-    
+
     .delete {
         background-color: lightcoral;
-    }  
-    
-    #grabPlayers {
-        background-color: lightblue; 
     }
-    
-    .pronoun {
-        width: 30px; 
-    }
-    
-    input[type=number]::-webkit-inner-spin-button {
-        opacity: 1
-    }   
-    .checkboxLabel {
-        font-size: 12px; 
-    }
-    
-    .checkbox {
-        margin-right: 0px; 
-    }
-    
-    
 
+    #grabPlayers {
+        background-color: lightblue;
+    }
+
+    .pronoun {
+        width: 30px;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button {
+        opacity: 1;
+    }
+    .checkboxLabel {
+        font-size: 12px;
+    }
+
+    .checkbox {
+        margin-right: 0px;
+    }
+
+    .teams {
+        display: flex;
+    }
+    .team {
+        width: 50%;
+    }
+    .team h2 {
+        text-align: center;
+    }
+    .player {
+        background-color: #f5f5f5;
+    }
+    .team-name {
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+    }
+    .team-name:focus {
+        outline: 2px solid #000000;
+        background-color: #f0f0f0;
+    }
+
+    .tabLinks button.active {
+        background-color: #ccc;
+    }
+    #debug {
+        background-color: #f5f5f5;
+        overflow: hidden;
+    }
 </style>
-<script type="text/javascript"> 
-    
+
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <meta charset="UTF-8" />
+        <title>FGC Stream Panel</title>
+    </head>
+    <body onLoad="init()">
+        <h1><b>SCOREBOARD PANEL</b> by @patmeharder_</h1>
+        <div class="tabs">
+            <button class="tabLinks" onclick="toggleCrew()">TOGGLE CREW BATTLE</button>
+            <div id="debug"></div>
+        </div>
+        <div id="tMain">
+            <div id="scoreboard">
+                <div>
+                    Match
+                    <select name="round" id="round">
+                        <option value="Tournament">Tournament</option>
+                        <option value="Casuals">Casuals</option>
+                        <option value="Winners Pools">Winners Pools</option>
+                        <option value="Losers Pools">Losers Pools</option>
+                        <option value="Winners Top 8">Winners Top 8</option>
+                        <option value="Losers Top 8">Losers Top 8</option>
+                        <option value="Losers Semi Finals">Losers Semi Finals</option>
+                        <option value="Winners Finals">Winners Finals</option>
+                        <option value="Losers Finals">Losers Finals</option>
+                        <option value="Grand Final">Grand Finals</option>
+                        <option value="Grand Final Reset">Grand Final Reset</option>
+                        <option value="Exhibition">Exhibition</option>
+                        <option value="Money Match">Money Match</option>
+                    </select>
+                </div>
+                <div>
+                    Game
+                    <select name="game" id="game">
+                        <option value="TEKKEN 8">TEKKEN 8</option>
+                        <option value="Tekken 8">TEKKEN 7</option>
+                        <option value="Tekken 8">TEKKEN TAG TOURNAMENT 2</option>
+                        <option value="Tekken 8">Street Fighter 6</option>
+                    </select>
+                </div>
+
+                <div id="areaPlayer1">
+                    P1
+                    <input type="text" id="pSponsor1" class="sponsor" placeholder="prefix" />
+                    <input type="text" id="pName1" class="name" placeholder="P1 NAME" />
+                    <input type="number" id="pScore1" class="score" placeholder="0" />
+                    <input type="text" id="pPronoun1" class="pronoun" placeholder="he/him" />
+                    <input type="text" id="pTwitter1" class="twitter" placeholder="twitter" />
+                    <input type="checkbox" id="pLosers1" class="checkbox" />
+                    <label class="checkboxLabel" for="pLosers1">(L)</label>
+                </div>
+                <div id="areaPlayer2">
+                    P2
+                    <input type="text" id="pSponsor2" class="sponsor" placeholder="prefix" />
+                    <input type="text" id="pName2" class="name" placeholder="P2 NAME" />
+                    <input type="number" id="pScore2" class="score" placeholder="0" />
+                    <input type="text" id="pPronoun2" class="pronoun" placeholder="he/him" />
+                    <input type="text" id="pTwitter2" class="twitter" placeholder="twitter" />
+                    <input type="checkbox" id="pLosers2" class="checkbox" />
+                    <label class="checkboxLabel" for="pLosers2">(L)</label>
+                </div>
+                <div>
+                    <input type="submit" id="pSwap" value="Swap Players" onClick="swapPlayers()" />
+                    <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()" />
+                    <input type="submit" class="delete" value="Delete Players" onClick="deletePlayerStorage()" />
+                    <input type="submit" id="grabPlayers" value="Grab start.gg Details" onClick="searchObject()" />
+                </div>
+            </div>
+            <div id="commentator1">
+                Commentator 1
+                <input type="text" id="cSponsor1" class="sponsor" />
+                <input type="text" id="cName1" class="name" placeholder="C1 NAME" />
+            </div>
+            <div id="commentator2">
+                Commentator 2
+                <input type="text" id="cSponsor2" class="sponsor" />
+                <input type="text" id="cName2" class="name" placeholder="C2 NAME" />
+            </div>
+
+            <div>
+                <input type="submit" id="cSwap" value="Swap Comms" onClick="swapComms()" />
+                <input type="submit" class="delete" value="Delete Commentators" onClick="deleteCommentatorStorage()" />
+            </div>
+
+            <div>
+                BRB Screen Message
+                <input type="text" id="msg" placeholder="WIP NOT WORKING" />
+            </div>
+            <div id="buttons">
+                <input type="submit" id="save" value="Save" onClick="saveRecords()" />
+            </div>
+        </div>
+
+        <div id="tCrew">
+            <b>Crew Battles</b>
+            <div class="buttons">
+                <button onclick="addPlayer()">Add Player</button>
+                <button onclick="removePlayer()">Remove Player</button>
+                <button onclick="resetAll()">Reset All</button>
+            </div>
+            <div class="teams">
+                <div class="team" id="teamA">
+                    <input type="text" class="team-name" value="Team A" oninput="updateTeamName('teamA', this.value)" />
+                    <div class="players"></div>
+                </div>
+
+                <div class="team" id="teamB">
+                    <input type="text" class="team-name" value="Team B" oninput="updateTeamName('teamB', this.value)" />
+                    <div class="players"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="help">
+            TIPS:
+            <ul>
+                <li>Hitting Enter submits/saves.</li>
+                <li>Tab and Tab+Shift to move without using mouse.</li>
+                <li><strong>/predictions</strong> in the chat to setup predictions</li>
+                <li>If anything fails, good luck (call one of the organisers)</li>
+            </ul>
+            Checklist:
+            <ul>
+                <li>update me</li>
+            </ul>
+        </div>
+
+        <div>
+            <div>DO NOT TOUCH (not working anyways)</div>
+            <div id="api">
+                <input type="password" id="api-key" placeholder="start.gg key TEMP" />
+                <input type="submit" id="api-save" value="Save" onClick="apiKeySubmitted()" />
+                <input type="submit" id="test1" value="TEST" onClick="testApi()" />
+            </div>
+            <input type="submit" class="delete" value="Fetch Start.gg participants" onClick="testApi()" />
+            <input type="submit" class="delete" value="Delete ALL Records" onClick="deleteLocalStorage()" />
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
     // GLOBAL STUFF, extremely hacky
-    let count = 0; // see savedRecords() 
-    
-    document.addEventListener("keydown", function(event) {
+    let count = 0; // see end of savedRecords()
+    let isCrewToggled = false; //toggle the crewbattle stuff
+
+    document.addEventListener("keydown", function (event) {
         // console.log(event.which); //debuggin
         if (event.key === "Enter") {
             document.getElementById("save").click();
         }
     });
-    
+
     function init() {
-        // localStorage.removeItem('api'); commented for debugging 
+        // localStorage.removeItem('api'); commented for debugging
         updateUI();
-        
     }
 
     function updateUI() {
-        document.getElementById('pScore1').value = localStorage.getItem('pScore1');
-        document.getElementById('pScore2').value = localStorage.getItem('pScore2');
-        document.getElementById('pName1').value = localStorage.getItem('pName1');
-        document.getElementById('pName2').value = localStorage.getItem('pName2');
-        document.getElementById('pSponsor1').value = localStorage.getItem('pSponsor1');
-        document.getElementById('pSponsor2').value = localStorage.getItem('pSponsor2');
-        document.getElementById('pPronoun1').value = localStorage.getItem('pPronoun1');
-        document.getElementById('pPronoun2').value = localStorage.getItem('pPronoun2');
-        document.getElementById('pTwitter1').value = localStorage.getItem('pTwitter1');
-        document.getElementById('pTwitter2').value = localStorage.getItem('pTwitter2');
-        document.getElementById('cName1').value = localStorage.getItem('cName1');
-        document.getElementById('cName2').value = localStorage.getItem('cName2');
-        document.getElementById('cSponsor1').value = localStorage.getItem('cSponsor1');
-        document.getElementById('cSponsor2').value = localStorage.getItem('cSponsor2');
-        document.getElementById('round').value = localStorage.getItem('round');
-        document.getElementById('game').value = localStorage.getItem('game'); 
-        
-        document.getElementById('pLosers1').checked = (localStorage.getItem('pLosers1') == "true") ? true : false; 
-        document.getElementById('pLosers2').checked = (localStorage.getItem('pLosers2') == "true") ? true : false;
+        document.getElementById("pScore1").value = localStorage.getItem("pScore1");
+        document.getElementById("pScore2").value = localStorage.getItem("pScore2");
+        document.getElementById("pName1").value = localStorage.getItem("pName1");
+        document.getElementById("pName2").value = localStorage.getItem("pName2");
+        document.getElementById("pSponsor1").value = localStorage.getItem("pSponsor1");
+        document.getElementById("pSponsor2").value = localStorage.getItem("pSponsor2");
+        document.getElementById("pPronoun1").value = localStorage.getItem("pPronoun1");
+        document.getElementById("pPronoun2").value = localStorage.getItem("pPronoun2");
+        document.getElementById("pTwitter1").value = localStorage.getItem("pTwitter1");
+        document.getElementById("pTwitter2").value = localStorage.getItem("pTwitter2");
+        document.getElementById("cName1").value = localStorage.getItem("cName1");
+        document.getElementById("cName2").value = localStorage.getItem("cName2");
+        document.getElementById("cSponsor1").value = localStorage.getItem("cSponsor1");
+        document.getElementById("cSponsor2").value = localStorage.getItem("cSponsor2");
+        document.getElementById("round").value = localStorage.getItem("round");
+        document.getElementById("game").value = localStorage.getItem("game");
+
+        document.getElementById("pLosers1").checked = localStorage.getItem("pLosers1") == "true" ? true : false;
+        document.getElementById("pLosers2").checked = localStorage.getItem("pLosers2") == "true" ? true : false;
+
+        if (isCrewToggled) {
+            document.getElementById("tCrew").style.display = "block";
+        } else {
+            document.getElementById("tCrew").style.display = "none";
+        }
     }
-    
-    function saveRecords() { //saves input from text box to local storage
-        // console.log(localStorage.getItem('pScore1')); 
-        localStorage.setItem('pScore1', document.getElementById('pScore1').value);
-        localStorage.setItem('pScore2', document.getElementById('pScore2').value);
-        localStorage.setItem('pName1', document.getElementById('pName1').value);
-        localStorage.setItem('pName2', document.getElementById('pName2').value);
-        localStorage.setItem('pSponsor1', document.getElementById('pSponsor1').value);
-        localStorage.setItem('pSponsor2', document.getElementById('pSponsor2').value);
-        localStorage.setItem('pPronoun1', document.getElementById('pPronoun1').value);
-        localStorage.setItem('pPronoun2', document.getElementById('pPronoun2').value);
-        localStorage.setItem('pTwitter1', document.getElementById('pTwitter1').value);
-        localStorage.setItem('pTwitter2', document.getElementById('pTwitter2').value);
-        localStorage.setItem('cName1', document.getElementById('cName1').value);
-        localStorage.setItem('cName2', document.getElementById('cName2').value);
-        localStorage.setItem('cSponsor1', document.getElementById('cSponsor1').value);
-        localStorage.setItem('cSponsor2', document.getElementById('cSponsor2').value);
+
+    function saveRecords() {
+        //saves input from text box to local storage
+        // console.log(localStorage.getItem('pScore1'));
+        localStorage.setItem("pScore1", document.getElementById("pScore1").value);
+        localStorage.setItem("pScore2", document.getElementById("pScore2").value);
+        localStorage.setItem("pName1", document.getElementById("pName1").value);
+        localStorage.setItem("pName2", document.getElementById("pName2").value);
+        localStorage.setItem("pSponsor1", document.getElementById("pSponsor1").value);
+        localStorage.setItem("pSponsor2", document.getElementById("pSponsor2").value);
+        localStorage.setItem("pPronoun1", document.getElementById("pPronoun1").value);
+        localStorage.setItem("pPronoun2", document.getElementById("pPronoun2").value);
+        localStorage.setItem("pTwitter1", document.getElementById("pTwitter1").value);
+        localStorage.setItem("pTwitter2", document.getElementById("pTwitter2").value);
+        localStorage.setItem("cName1", document.getElementById("cName1").value);
+        localStorage.setItem("cName2", document.getElementById("cName2").value);
+        localStorage.setItem("cSponsor1", document.getElementById("cSponsor1").value);
+        localStorage.setItem("cSponsor2", document.getElementById("cSponsor2").value);
         //localStorage.setItem('cPronoun1', document.getElementById('cPronoun1').value);
         //localStorage.setItem('cPronoun2', document.getElementById('cPronoun2').value);
-        localStorage.setItem('round', document.getElementById('round').value);
-        localStorage.setItem('msg', document.getElementById('msg').value);
-        localStorage.setItem('pLosers1', document.getElementById('pLosers1').checked);
-        localStorage.setItem('pLosers2', document.getElementById('pLosers2').checked);
-        localStorage.setItem('game', document.getElementById('game').value); 
-        
-        let debugText = "Saved"; 
-        count++; 
+        localStorage.setItem("round", document.getElementById("round").value);
+        localStorage.setItem("msg", document.getElementById("msg").value);
+        localStorage.setItem("pLosers1", document.getElementById("pLosers1").checked);
+        localStorage.setItem("pLosers2", document.getElementById("pLosers2").checked);
+        localStorage.setItem("game", document.getElementById("game").value);
+
+        let debugText = "Saved";
+        count++;
         if (count > 0) {
-            
-            for (let i = 0; i < count; i++) { // adds an '!' every consecutive time you press save. 
-                debugText += "!"; 
+            for (let i = 0; i < count; i++) {
+                // adds an '!' every consecutive time you press save.
+                debugText += "!";
             }
         }
-        document.getElementById('debug').innerHTML = debugText; 
-        //load(); 
+        document.getElementById("debug").innerHTML = debugText;
+        //load();
     }
 
     function deleteLocalStorage() {
         localStorage.clear();
-        localStorage.setItem('round', "Tournament"); 
-        localStorage.setItem('game', 'CHANGE GAME PLS'); 
-        localStorage.setItem('pScore1', "0"); 
-        localStorage.setItem('pScore2', "0"); 
-        localStorage.setItem('pLoser1', "false");
-        localStorage.setItem('pLoser2', "false"); 
-        document.getElementById('debug').innerHTML = "Local storage deleted";
-        updateUI(); 
-        count = 0; 
+        localStorage.setItem("round", "Tournament");
+        localStorage.setItem("game", "CHANGE GAME PLS");
+        localStorage.setItem("pScore1", "0");
+        localStorage.setItem("pScore2", "0");
+        localStorage.setItem("pLosers1", "false");
+        localStorage.setItem("pLosers2", "false");
+        document.getElementById("debug").innerHTML = "Local storage deleted";
+        updateUI();
+        count = 0;
     }
-    
+
     function deletePlayerStorage() {
-        localStorage.setItem('pScore1', "0"); 
-        localStorage.setItem('pScore2', "0"); 
-        localStorage.setItem('pSponsor1', "");
-        localStorage.setItem('pSponsor2', ""); 
-        localStorage.setItem('pName1', ""); 
-        localStorage.setItem('pName2', ""); 
-        localStorage.setItem('pPronoun1', ""); 
-        localStorage.setItem('pPronoun2', ""); 
-        localStorage.setItem('pTwitter1', ""); 
-        localStorage.setItem('pTwitter2', "");
-        localStorage.setItem('pLoser1', "false");
-        localStorage.setItem('pLoser2', "false"); 
-        document.getElementById('debug').innerHTML = "Player Storage Deleted";
-        updateUI(); 
-        count = 0; 
+        localStorage.setItem("pScore1", "0");
+        localStorage.setItem("pScore2", "0");
+        localStorage.setItem("pSponsor1", "");
+        localStorage.setItem("pSponsor2", "");
+        localStorage.setItem("pName1", "");
+        localStorage.setItem("pName2", "");
+        localStorage.setItem("pPronoun1", "");
+        localStorage.setItem("pPronoun2", "");
+        localStorage.setItem("pTwitter1", "");
+        localStorage.setItem("pTwitter2", "");
+        localStorage.setItem("pLosers1", "false");
+        localStorage.setItem("pLosers2", "false");
+        document.getElementById("debug").innerHTML = "Player Storage Deleted";
+        updateUI();
+        count = 0;
     }
-    
+
     function deleteCommentatorStorage() {
-        localStorage.setItem('cSponsor1', "");
-        localStorage.setItem('cSponsor2', ""); 
-        localStorage.setItem('cName1', ""); 
-        localStorage.setItem('cName2', ""); 
-        document.getElementById('debug').innerHTML = "Commentator Storage Deleted";
-        updateUI(); 
-        count = 0; 
+        localStorage.setItem("cSponsor1", "");
+        localStorage.setItem("cSponsor2", "");
+        localStorage.setItem("cName1", "");
+        localStorage.setItem("cName2", "");
+        document.getElementById("debug").innerHTML = "Commentator Storage Deleted";
+        updateUI();
+        count = 0;
     }
-    
 
     function resetScores() {
-        localStorage.setItem('pScore1', '0');
-        localStorage.setItem('pScore2', '0');
+        localStorage.setItem("pScore1", "0");
+        localStorage.setItem("pScore2", "0");
         updateUI();
-        document.getElementById('debug').innerHTML = "Scores Reset";
-        count = 0; 
+        document.getElementById("debug").innerHTML = "Scores Reset";
+        count = 0;
     }
 
     function swapPlayers() {
-        swap('pScore1', 'pScore2'); 
-        swap('pSponsor1', 'pSponsor2'); 
-        swap('pName1', 'pName2'); 
+        swap("pScore1", "pScore2");
+        swap("pSponsor1", "pSponsor2");
+        swap("pName1", "pName2");
         //swap('pPronoun1', 'pPronoun2');
-        //swap('pTwitter1', 'pTwitter2'); 
-        
-        let tempSwap = document.getElementById('pLosers1').checked;
-        
-        localStorage.setItem('pLosers1', document.getElementById('pLosers2').checked); 
-        localStorage.setItem('pLosers2', tempSwap);
-        
+        //swap('pTwitter1', 'pTwitter2');
+
+        let tempSwap = document.getElementById("pLosers1").checked;
+
+        localStorage.setItem("pLosers1", document.getElementById("pLosers2").checked);
+        localStorage.setItem("pLosers2", tempSwap);
+
         /*
         let tempSwap = document.getElementById('pScore1').value;  
         //console.log(document.getElementById('pScore1').value); 
@@ -221,37 +397,37 @@ too many names stored?
         localStorage.setItem('pScore1', document.getElementById('pScore2').value); 
         localStorage.setItem('pScore2', tempSwap);
         */
-        
-        updateUI(); 
-        
-        document.getElementById('debug').innerHTML = "Players Swaped";
-        count = 0; 
-    }
-    
-    function swapComms() {
-        swap('cSponsor1', 'cSponsor2'); 
-        swap('cName1', 'cName2');
-        
+
         updateUI();
-        document.getElementById('debug').innerHTML = "Comms Swaped";
-        count = 0; 
+
+        document.getElementById("debug").innerHTML = "Players Swaped";
+        count = 0;
     }
 
-    function swap(first, second) { //js doesn't have reference, so we will just do it here. 
-        let tempSwap = document.getElementById(first).value; 
+    function swapComms() {
+        swap("cSponsor1", "cSponsor2");
+        swap("cName1", "cName2");
 
-        localStorage.setItem(first, document.getElementById(second).value); 
-        localStorage.setItem(second , tempSwap);
-        
-        return; 
+        updateUI();
+        document.getElementById("debug").innerHTML = "Comms Swaped";
+        count = 0;
     }
-    
-    
+
+    function swap(first, second) {
+        //js doesn't have reference, so we will just do it here.
+        let tempSwap = document.getElementById(first).value;
+
+        localStorage.setItem(first, document.getElementById(second).value);
+        localStorage.setItem(second, tempSwap);
+
+        return;
+    }
+
     function apiKeySubmitted() {
-        let tempApiKey = "Bearer " + document.getElementById('api-key').value; 
-        localStorage.setItem('api', tempApiKey);
+        let tempApiKey = "Bearer " + document.getElementById("api-key").value;
+        localStorage.setItem("api", tempApiKey);
         console.log("testing");
-        return; 
+        return;
     }
 
     async function testApi() {
@@ -261,17 +437,17 @@ too many names stored?
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer REMOVE ME" , //temporary, needs to change
+                Authorization: "Bearer REMOVE ME" //temporary, needs to change
             },
 
             body: JSON.stringify({
-                query: "query eventQuery ($tourneySlug: String) { tournament(slug: $tourneySlug) { participants(query: {perPage: 500}) { nodes { prefix gamerTag prefix user { genderPronoun twitter: authorizations(types:[TWITTER]) { externalUsername } } } } }}", 
+                query: "query eventQuery ($tourneySlug: String) { tournament(slug: $tourneySlug) { participants(query: {perPage: 500}) { nodes { prefix gamerTag prefix user { genderPronoun twitter: authorizations(types:[TWITTER]) { externalUsername } } } } }}",
                 variables: {
-                    tourneySlug: 'omega-3-omegamania' // ALSO NEEDS TO CHANGE
-                },
-            }),
+                    tourneySlug: "omega-3-omegamania" // ALSO NEEDS TO CHANGE
+                }
+            })
         });
-        
+
         const data = await results.json();
         console.log(data); // Log full response to inspect
 
@@ -279,76 +455,75 @@ too many names stored?
         const participants = data.data.tournament.participants.nodes || [];
 
         // Extract name (gamerTag) and pronoun
-        const playerArray = participants.map(player => {
+        const playerArray = participants.map((player) => {
             console.log("Player data:", player); // Debugging log
             return {
                 pName: player.gamerTag,
-                pPronoun: player.user.genderPronoun || "", 
+                pPronoun: player.user.genderPronoun || "",
                 pSponsor: player.prefix || "",
                 pTwitter: player.user.twitter?.[0].externalUsername
             };
         });
-        
+
         // Save to localStorage
         localStorage.setItem("playersArray", JSON.stringify(playerArray));
-        console.log(playerArray[9]); 
-        document.getElementById('debug').innerHTML = "Fetch completed";
+        console.log(playerArray[9]);
+        document.getElementById("debug").innerHTML = "Fetch completed";
     }
-              
-
 
     //SAVING OBJECTS INTO LOCAL STORAGE
-    
-        //pName: string, 
-        //pSponsor: string, 
-        //pState: string, 
-        //pPronoun: string, 
-        //pCharacter: string NOT USING FOR NOW   
 
+    //pName: string,
+    //pSponsor: string,
+    //pState: string,
+    //pPronoun: string,
+    //pCharacter: string NOT USING FOR NOW
 
-    function searchObject() { // iterate through players array looking
-        localStorage.setItem('pName1', document.getElementById('pName1').value);
-        localStorage.setItem('pName2', document.getElementById('pName2').value);
-        document.getElementById('pName1').value = localStorage.getItem('pName1');
-        document.getElementById('pName2').value = localStorage.getItem('pName2');
-        
-        
+    function searchObject() {
+        // iterate through players array looking
+        localStorage.setItem("pName1", document.getElementById("pName1").value);
+        localStorage.setItem("pName2", document.getElementById("pName2").value);
+        document.getElementById("pName1").value = localStorage.getItem("pName1");
+        document.getElementById("pName2").value = localStorage.getItem("pName2");
+
         let playersArray = JSON.parse(localStorage.getItem("playersArray")) || [];
-        //console.log(playersArray); 
+        //console.log(playersArray);
         let i = false;
         for (const key of playersArray) {
             for (let playerNumber = 1; playerNumber <= 2; playerNumber++) {
-                let storedPName = localStorage.getItem('pName' + playerNumber);
-                
-                if (key.pName.toLowerCase() === localStorage.getItem('pName' + playerNumber).toLowerCase()) {
+                let storedPName = localStorage.getItem("pName" + playerNumber);
+
+                if (key.pName.toLowerCase() === localStorage.getItem("pName" + playerNumber).toLowerCase()) {
                     console.log("Match found:", key.pName);
                     // Save additional player details to localStorage
-                    localStorage.setItem('pSponsor' + playerNumber, key.pSponsor);
-                    localStorage.setItem('pPronoun' + playerNumber, key.pPronoun);
-                    localStorage.setItem('pTwitter' + playerNumber, key.pTwitter); 
+                    localStorage.setItem("pSponsor" + playerNumber, key.pSponsor);
+                    localStorage.setItem("pPronoun" + playerNumber, key.pPronoun);
+                    localStorage.setItem("pTwitter" + playerNumber, key.pTwitter);
                     updateUI(); // Call update function
                     i = true;
-                    count = 0; 
-                    document.getElementById('debug').innerHTML = "worked";
-                }            
+                    count = 0;
+                    document.getElementById("debug").innerHTML = "worked";
+                }
             }
         }
         if (i == false) {
-            document.getElementById('debug').innerHTML = "Failed (name must match start.gg)";
+            document.getElementById("debug").innerHTML = "Failed (name must match start.gg)";
         }
-        count++; 
-        let debugText = ""; 
+        count++;
+        let debugText = "";
         if (count > 0) {
-            for (let j = 0; j < count; j++) { // adds an '!' every consecutive time you press save. 
-                debugText += "!"; 
+            for (let j = 0; j < count; j++) {
+                // adds an '!' every consecutive time you press save.
+                debugText += "!";
             }
         }
-        document.getElementById('debug').innerHTML += debugText;
+        document.getElementById("debug").innerHTML += debugText;
     }
 
-    function appendObject(playerName) { // replaces objects and adds objects
+    function appendObject(playerName) {
+        // replaces objects and adds objects
         return;
-    } 
+    }
     /*
     function load() {
         var mydata = JSON.parse("result.json");
@@ -364,137 +539,195 @@ too many names stored?
     //var retrievedObject = localStorage.getItem('patmeharder');
 
     //console.log('retrievedObject: ', JSON.parse(retrievedObject));
-    
-</script>
 
-<html lang="en">
-    <head>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <meta charset="UTF-8"/>
-        <title>FGC Stream Panel</title>
-    </head>
-    <body onLoad="init()">
-        <div id="board">
-            <div id="scoreboard"> 
-                <h1><b>SCOREBOARD PANEL</b> by @patmeharder_ </h1>
-                <div>
-                    Match
-                    <select name="round" id="round">
-                    <option value="Tournament">Tournament</option>
-                    <option value="Casuals">Casuals</option>
-                    <option value="Winners Pools">Winners Pools</option>
-                    <option value="Losers Pools">Losers Pools</option>
-                    <option value="Winners Top 8">Winners Top 8</option>
-                    <option value="Losers Top 8">Losers Top 8</option>
-                    <option value="Losers Semi Finals">Losers Semi Finals</option>   
-                    <option value="Winners Finals">Winners Finals</option>
-                    <option value="Losers Finals">Losers Finals</option>
-                    <option value="Grand Final">Grand Finals</option>
-                    <option value="Grand Final Reset">Grand Final Reset</option>
-                    <option value="Exhibition">Exhibition</option> 
-                    <option value="Money Match">Money Match</option>  
-                    </select>
-                </div>
-                <div>
-                    Game 
-                    <select name="game" id="game">
-                        <option value="TEKKEN 8">TEKKEN 8</option>
-                        <option value="Tekken 8">TEKKEN 7</option>
-                        <option value="Tekken 8">TEKKEN TAG TOURNAMENT 2</option>  
-                        <option value="Tekken 8">Street Fighter 6</option>  
-                    
-                    </select>
-                </div>
-                
-            <div id="areaPlayer1">
-                P1
-                <input type="text" id="pSponsor1" class="sponsor" placeholder="prefix">
-                <input type="text" id="pName1" class="name" placeholder="P1 NAME">
-                <input type="number" id="pScore1" class="score" placeholder="0">
-                <input type="text" id="pPronoun1" class="pronoun" placeholder="he/him">
-                <input type="text" id="pTwitter1" class="twitter" placeholder="twitter">
-                <input type="checkbox" id="pLosers1" class="checkbox"> 
-                <label class="checkboxLabel" for="pLosers1">(L)</label>
-            </div>   
-            <div id="areaPlayer2">
-                P2
-                <input type="text" id="pSponsor2" class="sponsor" placeholder="prefix">
-                <input type="text" id="pName2" class="name" placeholder="P2 NAME">
-                <input type="number" id="pScore2" class="score" placeholder="0">
-                <input type="text" id="pPronoun2" class="pronoun" placeholder="he/him">
-                <input type="text" id="pTwitter2" class="twitter" placeholder="twitter">
-                <input type="checkbox" id="pLosers2" class="checkbox"> 
-                <label class="checkboxLabel" for="pLosers2">(L)</label>
-            </div>
-            <div>
-                <input type="submit" id="pSwap" value="Swap Players" onClick="swapPlayers()">
-                <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()">
-                <input type="submit" class="delete" value="Delete Players" onClick="deletePlayerStorage()">
-                <input type="submit" id="grabPlayers" value="Grab start.gg Details" onClick="searchObject()">
-            </div>
+    function toggleCrew() {
+        isCrewToggled = !isCrewToggled;
+        document.getElementById("debug").innerHTML = "crewbattle toggled " + isCrewToggled;
+        updateUI();
+        return;
+    }
 
-            </div>
-            <div id="commentator1">
-                Commentator 1
-                <input type="text" id="cSponsor1" class="sponsor">
-                <input type="text" id="cName1" class="name" placeholder="C1 NAME">
-            </div>
-            <div id="commentator2">
-                Commentator 2                
-                <input type="text" id="cSponsor2" class="sponsor">
-                <input type="text" id="cName2" class="name" placeholder="C2 NAME">
-            </div>
-            
-            
-            
-            <div>
-                <input type="submit" id="cSwap" value="Swap Comms" onClick="swapComms()">
-                <input type="submit" class="delete" value="Delete Commentators" onClick="deleteCommentatorStorage()">
-            </div>
+    let playerIdCounter = 0;
+    const STORAGE_KEY = "teamsData";
+    let teamsData = {
+        teamA: [],
+        teamB: [],
+        names: {
+            teamA: "Team A",
+            teamB: "Team B"
+        }
+    };
+    function updateTeamName(teamId, newName) {
+        teamsData.names[teamId] = newName;
+        saveToLocalStorage();
+    }
 
-            <div>
-            BRB Screen Message 
-                <input type="text" id="msg" placeholder="WIP NOT WORKING"> 
-            </div>
-            <div id="buttons">
-                <input type="submit" id="save" value="Save" onClick="saveRecords()">
-            </div>
-            
-            
-            
+    function saveToLocalStorage() {
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+                playerIdCounter,
+                teamsData
+            })
+        );
+    }
 
-            
-            <div id="api">
-                <input type="password" id="api-key" placeholder="start.gg key TEMP"> 
-                <input type="submit" id="api-save" value="Save" onClick="apiKeySubmitted()">
-                <input type="submit" id="test1" value="TEST" onClick="testApi()">
-            </div>
+    function loadFromLocalStorage() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            playerIdCounter = parsed.playerIdCounter || 0;
+            teamsData = parsed.teamsData || { teamA: [], teamB: [] };
+            rebuildUIFromData();
+        }
+    }
 
-        </div>
-        <div id="debug"></div>
-        <br> 
-                    
-        <div id="help"> 
-            TIPS:
-            <ul>
-                <li>Hitting Enter submits/saves.</li>
-                <li>Tab and Tab+Shift to move without using mouse.</li>
-                <li><strong>/predictions</strong> in the chat to setup predictions </li>
-                <li>If anything fails, good luck (call one of the organisers)</li>
-            </ul>
-            Checklist: 
-            <ul>
-                <li>!bracket link update</li>
-                <li>start.gg/trouble-in-parradise-XX/event/tekken-8</li>
-            </ul>
-            
-        </div>
-        <div>
-            <div>DO NOT TOUCH (not working anyways)</div>
-            <input type="submit" class="delete" value="Fetch Start.gg participants" onClick="testApi()">
-            <input type="submit" class="delete" value="Delete ALL Records" onClick="deleteLocalStorage()">
-        </div>
+    function createPlayerHTML(teamId, id, data = {}) {
+        const player = document.createElement("div");
+        player.className = "player";
+        player.dataset.playerId = id;
 
+        player.innerHTML = `
+        PLAYER ${id + 1} <br> 
+        <input type="text" placeholder="prefix" value="${data.pSponsor || ""}" oninput="updateData('${teamId}', ${id}, 'pSponsor', this.value)">
+        <input type="text" placeholder="name" value="${data.pName || ""}"  oninput="updateData('${teamId}', ${id}, 'pName', this.value)">
+        <input type="text" placeholder="pronouns" value="${data.pPronoun || ""}" oninput="updateData('${teamId}', ${id}, 'pPronoun', this.value)">
+        <input type="text" placeholder="twitter" value="${data.pTwitter || ""}" oninput="updateData('${teamId}', ${id}, 'pTwitter', this.value)">
+        <input type="checkbox" class="checkbox" value="${data.pLost || false}" oninput="updateData('${teamId}', ${id}, 'pLost', this.checked)">
+        <label class="checkboxLabel">Out/Lost/DEAD</label>
         
-    </body>
-</html>
+        
+        <button onclick="setP1('${teamId}', ${id})">Set as P1</button>
+        <button onclick="setP2('${teamId}', ${id})">Set as P2</button> 
+        <button onclick="clearPlayerDetails('${teamId}', ${id}, this)">Clear Details</button>
+        <br> 
+        `;
+
+        return player;
+    }
+
+    function setP1(teamId, id) {
+        const team = teamsData[teamId];
+        const player = team.find((p) => p.id === id);
+        if (player) {
+            if (player.pSponsor != undefined) localStorage.setItem("pSponsor1", player.pSponsor);
+            if (player.pName != undefined) localStorage.setItem("pName1", player.pName);
+            if (player.pPronoun != undefined) localStorage.setItem("pPronoun1", player.pPronoun);
+            if (player.pTwitter != undefined) localStorage.setItem("pTwitter1", player.pTwitter);
+        }
+        updateUI();
+        //document.getElementById("debug").innerHTML = "player" + (id + 1) + " of " + teamId + " set as P1";
+        return;
+    }
+
+    function setP2(teamId, id) {
+        const team = teamsData[teamId];
+        const player = team.find((p) => p.id === id);
+        if (player) {
+            if (player.pSponsor != undefined) localStorage.setItem("pSponsor2", player.pSponsor);
+            if (player.pName != undefined) localStorage.setItem("pName2", player.pName);
+            if (player.pPronoun != undefined) localStorage.setItem("pPronoun2", player.pPronoun);
+            if (player.pTwitter != undefined) localStorage.setItem("pTwitter2", player.pTwitter);
+        }
+        updateUI();
+        //document.getElementById("debug").innerHTML = "player" + (id + 1) + " of " + teamId + " set as P1";
+        return;
+    }
+
+    function addPlayer() {
+        const id = playerIdCounter++;
+
+        const newPlayerData = { id, pName: "", pPronouns: "", pTwitter: "", pSponsor: "" };
+        teamsData.teamA.push({ ...newPlayerData });
+        teamsData.teamB.push({ ...newPlayerData });
+
+        const playerA = createPlayerHTML("teamA", id);
+        const playerB = createPlayerHTML("teamB", id);
+
+        document.querySelector("#teamA .players").appendChild(playerA);
+        document.querySelector("#teamB .players").appendChild(playerB);
+
+        saveToLocalStorage();
+    }
+
+    function removePlayer() {
+        const id = playerIdCounter--;
+        const playersA = document.querySelector("#teamA .players");
+        const playersB = document.querySelector("#teamB .players");
+
+        if (playersA.lastElementChild && playersB.lastElementChild) {
+            const idToRemove = playersA.lastElementChild.dataset.playerId;
+
+            playersA.removeChild(playersA.lastElementChild);
+            playersB.removeChild(playersB.lastElementChild);
+
+            teamsData.teamA = teamsData.teamA.filter((p) => p.id != idToRemove);
+            teamsData.teamB = teamsData.teamB.filter((p) => p.id != idToRemove);
+
+            saveToLocalStorage();
+        }
+    }
+    function clearPlayerDetails(teamId, id, button) {
+        const team = teamsData[teamId];
+        const player = team.find((p) => p.id === id);
+        if (player) {
+            player.pName = "";
+            player.pPronoun = "";
+            player.pTwitter = "";
+            player.pSponsor = ""; 
+            saveToLocalStorage();
+
+            // Clear inputs in the UI
+            const container = button.closest(".player");
+            container.querySelectorAll("input").forEach((input) => (input.value = ""));
+        }
+    }
+
+    function updateData(teamId, id, field, value) {
+        const team = teamsData[teamId];
+        const player = team.find((p) => p.id === id);
+        if (player) {
+            player[field] = value;
+            saveToLocalStorage();
+        }
+        console.log(value); 
+    }
+
+    function rebuildUIFromData() {
+        const playersAContainer = document.querySelector("#teamA .players");
+        const playersBContainer = document.querySelector("#teamB .players");
+
+        playersAContainer.innerHTML = "";
+        playersBContainer.innerHTML = "";
+
+        document.querySelector("#teamA .team-name").value = teamsData.names.teamA || "Team A";
+        document.querySelector("#teamB .team-name").value = teamsData.names.teamB || "Team B";
+
+        teamsData.teamA.forEach((player, index) => {
+            const playerA = createPlayerHTML("teamA", player.id, player);
+            const playerB = createPlayerHTML("teamB", player.id, teamsData.teamB[index]);
+            playersAContainer.appendChild(playerA);
+            playersBContainer.appendChild(playerB);
+        });
+    }
+
+    function resetAll() {
+        teamsData = {
+            teamA: [],
+            teamB: [],
+            names: {
+                teamA: "Team A",
+                teamB: "Team B"
+            }
+        };
+        playerIdCounter = 0;
+        localStorage.removeItem(STORAGE_KEY);
+        rebuildUIFromData();
+    }
+
+    // Load data and render when the page starts
+    window.addEventListener("load", loadFromLocalStorage);
+
+    // Optional: expose data for dev
+    window.getTeamsData = () => console.log(JSON.stringify(teamsData, null, 2));
+</script>
