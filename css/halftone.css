@@ -25,19 +25,23 @@
  * 
  * 
  * - patmeharder
+ * 
+NOTES TO SELF:
+Need to fix colour half tone
+Seperate each layer possibly. 
  */
 
 :root {
-    --size: 12px;
+    --size: 20px;
     --bleed: 0.60; 
     --rotate: 0deg; 
-    --canvasX: 1920px; 
 }
 
 .halftone {
     position: relative;
+    overflow: hidden; 
     filter: 
-        brightness(0.7) 
+        brightness(var(--bleed)) 
         blur(3px) 
         contrast(999);
 }
@@ -53,7 +57,7 @@
     height: 3000px;
     inset: 0;
     background:
-      radial-gradient(calc(var(--size)/2) at center, black, white),
+      radial-gradient(calc(var(--size)/4*1) at center, black, white),
       radial-gradient(calc(var(--size)/2) at 25% 25%, cyan, white),
       radial-gradient(calc(var(--size)/2) at 75% 25%, magenta, white),
       radial-gradient(calc(var(--size)/2) at 50% 75%, yellow, white);
@@ -64,9 +68,10 @@
 
 .halftone-black {
     position: relative;
+    overflow: hidden; 
     filter: 
         grayscale(1) 
-        brightness(0.7) 
+        brightness(var(--bleed)) 
         blur(2px) 
         contrast(999);
 }
@@ -85,5 +90,10 @@
     background-size: var(--size) var(--size);
     background-blend-mode: multiply;
     mix-blend-mode: screen;
+}
+.photo {
+    position: absolute; 
+    top: 0px;
+    left: 0px; 
 }
 

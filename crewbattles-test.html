@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <style>
+            .teams {
+                display: flex;
+            }
+            .team {
+                width: 50%;
+            }
+            .team h2 {
+                text-align: center;
+            }
+            .player {
+                background-color: #f5f5f5;
+            }
+            .team-name {
+                font-weight: bold;
+                text-align: center;
+                width: 100%;
+            }
+            .team-name:focus {
+                outline: 2px solid #000000;
+                background-color: #f0f0f0;
+            }
+            .tabLinks {
+                background-color: rgb(255, 197, 197);
+                outline: none;
+                border: none;
+                padding: 14px 16px;
+            }
+
+            .tabLinks button.active {
+                background-color: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="tabs">
+            <button class="tabLinks" onclick="toggleCrew()">CREW BATTLE</button>
+        </div>
+
+        <div id="tCrew">
+            <div class="buttons">
+                <button onclick="addPlayer()">Add Player</button>
+                <button onclick="removePlayer()">Remove Player</button>
+                <button onclick="saveToLocalStorage()">Save to LocalStorage</button>
+                <button onclick="resetAll()">Reset All</button>
+            </div>
+            <div class="teams">
+                <div class="team" id="teamA">
+                    <input type="text" class="team-name" value="Team A" oninput="updateTeamName('teamA', this.value)" />
+                    <div class="players"></div>
+                    <div class="buttons">
+                        <button onclick="addPlayer()">Add Player</button>
+                        <button onclick="removePlayer()">Remove Player</button>
+                    </div>
+                </div>
+
+                <div class="team" id="teamB">
+                    <input type="text" class="team-name" value="Team B" oninput="updateTeamName('teamB', this.value)" />
+                    <div class="players"></div>
+                </div>
+            </div>
+        </div>
+        <div id="tMain">
+        
+        HELLO WORLD TEST</div>
+
+        <script>
+            function openMain() {
+                document.getElementById("tMain").style.display = "block";
+                document.getElementById("tCrew").style.display = "none";
+            }
+
+            function openCrew() {
+                document.getElementById("tCrew").style.display = "block";
+                document.getElementById("tMain").style.display = "none";
+            }
+            
+            function toggleCrew() {
+                
+            }
+
+            let playerIdCounter = 0;
+            const STORAGE_KEY = "teamsData";
+            let teamsData = {
+                teamA: [],
+                teamB: [],
+                names: {
+                    teamA: "Team A",
+                    teamB: "Team B"
+                }
+            };
+            function updateTeamName(teamId, newName) {
+                teamsData.names[teamId] = newName;
+                saveToLocalStorage();
+            }
+
+            function saveToLocalStorage() {
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify({
+                        playerIdCounter,
+                        teamsData
+                    })
+                );
+            }
+
+            function loadFromLocalStorage() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    playerIdCounter = parsed.playerIdCounter || 0;
+                    teamsData = parsed.teamsData || { teamA: [], teamB: [] };
+                    rebuildUIFromData();
+                }
+            }
+
+            function createPlayerHTML(teamId, id, data = {}) {
+                const player = document.createElement("div");
+                player.className = "player";
+                player.dataset.playerId = id;
+
+                player.innerHTML = `
+                    <input type="text" placeholder="prefix" value="${data.clan || ""}" oninput="updateData('${teamId}', ${id}, 'clan', this.value)">
+                    <input type="text" placeholder="name" value="${data.pName || ""}" oninput="updateData('${teamId}', ${id}, 'name', this.value)">
+                    <input type="text" placeholder="pronouns" value="${data.pronouns || ""}" oninput="updateData('${teamId}', ${id}, 'pronouns', this.value)">
+                    <input type="text" placeholder="twitter" value="${data.twitter || ""}" oninput="updateData('${teamId}', ${id}, 'twitter', this.value)">
+                    <button onclick="clearPlayerDetails('${teamId}', ${id}, this)">Clear Details</button>
+                    <button onclick="setP1('${teamId}', ${id}, this)">Set as P1</button>
+                    <button onclick="setP2('${teamId}', ${id}, this)">Set as P2</button>
+                `;
+
+                return player;
+            }
+
+            function addPlayer() {
+                const id = playerIdCounter++;
+
+                const newPlayerData = { id, pName: "", pronouns: "", twitter: "", clan: "" };
+                teamsData.teamA.push({ ...newPlayerData });
+                teamsData.teamB.push({ ...newPlayerData });
+
+                const playerA = createPlayerHTML("teamA", id);
+                const playerB = createPlayerHTML("teamB", id);
+
+                document.querySelector("#teamA .players").appendChild(playerA);
+                document.querySelector("#teamB .players").appendChild(playerB);
+
+                saveToLocalStorage();
+            }
+
+            function removePlayer() {
+                const id = playerIdCounter--;
+                const playersA = document.querySelector("#teamA .players");
+                const playersB = document.querySelector("#teamB .players");
+
+                if (playersA.lastElementChild && playersB.lastElementChild) {
+                    const idToRemove = playersA.lastElementChild.dataset.playerId;
+
+                    playersA.removeChild(playersA.lastElementChild);
+                    playersB.removeChild(playersB.lastElementChild);
+
+                    teamsData.teamA = teamsData.teamA.filter((p) => p.id != idToRemove);
+                    teamsData.teamB = teamsData.teamB.filter((p) => p.id != idToRemove);
+
+                    saveToLocalStorage();
+                }
+            }
+            function clearPlayerDetails(teamId, id, button) {
+                const team = teamsData[teamId];
+                const player = team.find((p) => p.id === id);
+                if (player) {
+                    player.pName = "";
+                    player.pronouns = "";
+                    player.twitter = "";
+                    player.clan = "";
+                    saveToLocalStorage();
+
+                    // Clear inputs in the UI
+                    const container = button.closest(".player");
+                    container.querySelectorAll("input").forEach((input) => (input.value = ""));
+                }
+            }
+
+            function updateData(teamId, id, field, value) {
+                const team = teamsData[teamId];
+                const player = team.find((p) => p.id === id);
+                if (player) {
+                    player[field] = value;
+                    saveToLocalStorage();
+                }
+            }
+
+            function rebuildUIFromData() {
+                const playersAContainer = document.querySelector("#teamA .players");
+                const playersBContainer = document.querySelector("#teamB .players");
+
+                playersAContainer.innerHTML = "";
+                playersBContainer.innerHTML = "";
+
+                document.querySelector("#teamA .team-name").value = teamsData.names.teamA || "Team A";
+                document.querySelector("#teamB .team-name").value = teamsData.names.teamB || "Team B";
+
+                teamsData.teamA.forEach((player, index) => {
+                    const playerA = createPlayerHTML("teamA", player.id, player);
+                    const playerB = createPlayerHTML("teamB", player.id, teamsData.teamB[index]);
+                    playersAContainer.appendChild(playerA);
+                    playersBContainer.appendChild(playerB);
+                });
+            }
+
+            function resetAll() {
+                if (confirm("Are you sure you want to reset everything?")) {
+                    teamsData = {
+                        teamA: [],
+                        teamB: [],
+                        names: {
+                            teamA: "Team A",
+                            teamB: "Team B"
+                        }
+                    };
+                    playerIdCounter = 0;
+                    localStorage.removeItem(STORAGE_KEY);
+                    rebuildUIFromData();
+                }
+            }
+
+            // Load data and render when the page starts
+            window.addEventListener("load", loadFromLocalStorage);
+
+            // Optional: expose data for dev
+            window.getTeamsData = () => console.log(JSON.stringify(teamsData, null, 2));
+        </script>
+    </body>
+</html>
