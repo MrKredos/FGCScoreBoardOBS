@@ -180,43 +180,50 @@
 
         document.getElementById("pSponsor1").innerHTML = trimInput(localStorage.getItem("pSponsor1"));
         document.getElementById("pSponsor2").innerHTML = trimInput(localStorage.getItem("pSponsor2"));
-        /*
-        let score1 = ;
-        
-        //document.getElementById('debug').innerHTML = score1;
-        if (score1.length == 1) {
-            score1 = "0" + score1;
-        } else if (score1.length == 0 || score1.length == null) {
-            score1 = "00";
-        }
-        
-
-        let score2 = localStorage.getItem("pScore2");
-       
-        if (score2.length == 1) {
-            score2 = "0" + score2;
-        } else if (score2.length == 0 || score2.length == null) {
-            score2 = "00";
-        }
-        */
 
         document.getElementById("pScore1").innerHTML = localStorage.getItem("pScore1");
         document.getElementById("pScore2").innerHTML = localStorage.getItem("pScore2");
 
-        //document.getElementById("round").innerHTML = localStorage.getItem("round");
-        /*
-        let cName1 = localStorage.getItem("cName1");
-        let cName2 = localStorage.getItem("cName2");
-
-        if ((cName1 == null || cName1 == "") && (cName2 == null || cName2 == "")) {
-            document.getElementById("mic").style.display = "none";
-        } else {
-            document.getElementById("mic").style.display = "block";
+        // FOR THE CREWS
+        const data = JSON.parse(localStorage.getItem("teamsData"));
+        const container = document.getElementById("teamsContainer");
+        
+        // removes previous iterations, so it doesn't double up, kinda hacky solution, but it works. 
+        while (container.hasChildNodes()) {
+            container.removeChild(container.firstChild);
         }
 
-        document.getElementById("cName1").innerHTML = localStorage.getItem("cName1");
-        document.getElementById("cName2").innerHTML = localStorage.getItem("cName2");
-        */
+        function createTeam(teamName, players) {
+            const teamDiv = document.createElement("div");
+            teamDiv.classList.add("team");
+            teamDiv.id = teamName;
+
+            players.forEach((player) => {
+                const playerDiv = document.createElement("div");
+                playerDiv.classList.add("player");
+                playerDiv.id = teamName + "p" + (player.id + 1);
+                if (player.pLost !== true) {
+                    playerDiv.innerHTML = `
+                    <div id="${teamName}p${player.id + 1}Name">${(player.pSponsor || "") + " " + (player.pName || "")}</div> 
+                  `;
+                } else {
+                    playerDiv.innerHTML = `
+                    <div style="color: grey;" id="${teamName}p${player.id + 1}Name"><s>${(player.pSponsor || "") + " " + (player.pName || "")}</s></div> 
+                    <!-- <div id="${teamName}p${player.id + 1}Pronoun">${player.pPronoun || ""}</div>
+                    <div id="${teamName}p${player.id + 1}Sponsor">${player.pSponsor || ""}</div>
+                    <div id="${teamName}p${player.id + 1}Twitter">${player.pTwitter || ""}</div> -->
+                  `;
+                }
+
+                teamDiv.appendChild(playerDiv);
+            });
+
+            return teamDiv;
+        }
+
+        // rendering
+        container.appendChild(createTeam("t1", data.teamsData.teamA));
+        container.appendChild(createTeam("t2", data.teamsData.teamB));
     }
 
     function init() {
@@ -243,55 +250,4 @@
         return input.length > 10 ? input.substring(0, 10) + "..." : input;
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const data = JSON.parse(localStorage.getItem("teamsData"));
-        const container = document.getElementById("teamsContainer");
-
-        if (!data) {
-            //container.innerHTML = "<p>No team data found in localStorage.</p>";
-            //return;
-        }
-        /*
-        console.log(data);
-        console.log(data.teamsData);
-        */
-
-        // Function to build team section
-        function createTeam(teamName, players) {
-            const teamDiv = document.createElement("div");
-            teamDiv.classList.add("team");
-            teamDiv.id = teamName;
-            /*
-            const heading = document.createElement("h2");
-            heading.textContent = teamName;
-            teamDiv.appendChild(heading);
-            */
-
-            players.forEach((player) => {
-                const playerDiv = document.createElement("div");
-                playerDiv.classList.add("player");
-                playerDiv.id = teamName + "p" + (player.id + 1);
-                if (player.pLost !== true) {
-                    playerDiv.innerHTML = `
-                    <div id="${teamName}p${player.id + 1}Name">${(player.pSponsor || "") + " " + (player.pName || "")}</div> 
-                  `;
-                } else {
-                    playerDiv.innerHTML = `
-                    <div style="color: grey;" id="${teamName}p${player.id + 1}Name"><s>${(player.pSponsor || "") + " " + (player.pName || "")}</s></div> 
-                    <!-- <div id="${teamName}p${player.id + 1}Pronoun">${player.pPronoun || ""}</div>
-                    <div id="${teamName}p${player.id + 1}Sponsor">${player.pSponsor || ""}</div>
-                    <div id="${teamName}p${player.id + 1}Twitter">${player.pTwitter || ""}</div> -->
-                  `;
-                }
-
-                teamDiv.appendChild(playerDiv);
-            });
-
-            return teamDiv;
-        }
-
-        // Render both teams
-        container.appendChild(createTeam("t1", data.teamsData.teamA));
-        container.appendChild(createTeam("t2", data.teamsData.teamB));
-    });
 </script>

@@ -48,7 +48,7 @@ too many names stored?
         width: 100px;
     }
 
-    #save {
+    .save {
         background-color: lightgreen;
     }
 
@@ -196,7 +196,7 @@ too many names stored?
                 <input type="text" id="msg" placeholder="WIP NOT WORKING" />
             </div>
             <div id="buttons">
-                <input type="submit" id="save" value="Save" onClick="saveRecords()" />
+                <input type="submit" class="save" id="save" value="Save" onClick="saveRecords()" />
             </div>
         </div>
 
@@ -206,6 +206,7 @@ too many names stored?
                 <button onclick="addPlayer()">Add Player</button>
                 <button onclick="removePlayer()">Remove Player</button>
                 <button onclick="resetAll()">Reset All</button>
+                <button onclick="saveAll()">Save All</button>
             </div>
             <div class="teams">
                 <div class="team" id="teamA">
@@ -589,19 +590,21 @@ too many names stored?
 
         player.innerHTML = `
         PLAYER ${id + 1} <br> 
-        <input type="text" placeholder="prefix" value="${data.pSponsor || ""}" oninput="updateData('${teamId}', ${id}, 'pSponsor', this.value)">
-        <input type="text" placeholder="name" value="${data.pName || ""}"  oninput="updateData('${teamId}', ${id}, 'pName', this.value)">
-        <input type="text" placeholder="pronouns" value="${data.pPronoun || ""}" oninput="updateData('${teamId}', ${id}, 'pPronoun', this.value)">
-        <input type="text" placeholder="twitter" value="${data.pTwitter || ""}" oninput="updateData('${teamId}', ${id}, 'pTwitter', this.value)">
-        <input type="checkbox" class="checkbox" value="${data.pLost || false}" oninput="updateData('${teamId}', ${id}, 'pLost', this.checked)">
+        <input type="text" placeholder="prefix" id="${teamId}Sponsor${id}" value="${data.pSponsor || ""}">
+        <input type="text" placeholder="name" id="${teamId}Name${id}" value="${data.pName || ""}">
+        <input type="text" placeholder="pronouns" id="${teamId}Pronoun${id}" value="${data.pPronoun || ""}">
+        <input type="text" placeholder="twitter" id="${teamId}Twitter${id}" value="${data.pTwitter || ""}">
+        <input type="checkbox" class="checkbox" id="${teamId}Lost${id}" value="${data.pLost || false}">
         <label class="checkboxLabel">Out/Lost/DEAD</label>
-        
         
         <button onclick="setP1('${teamId}', ${id})">Set as P1</button>
         <button onclick="setP2('${teamId}', ${id})">Set as P2</button> 
         <button onclick="clearPlayerDetails('${teamId}', ${id}, this)">Clear Details</button>
+        <button onclick="updatePlayer('${teamId}', ${id})" class="save">Save</button> 
         <br> 
         `;
+        
+        console.log("creating player");
 
         return player;
     }
@@ -674,13 +677,23 @@ too many names stored?
             player.pName = "";
             player.pPronoun = "";
             player.pTwitter = "";
-            player.pSponsor = ""; 
+            player.pSponsor = "";
             saveToLocalStorage();
 
             // Clear inputs in the UI
             const container = button.closest(".player");
             container.querySelectorAll("input").forEach((input) => (input.value = ""));
         }
+    }
+    function updateAll() {
+        
+        
+    }
+    
+    function updatePlayer(teamId, id) {
+        updateData(teamId, id, "pPronoun", document.getElementById(teamId+"Pronoun"+id).value); 
+        updateData(teamId, id, "pName", document.getElementById(teamId+"Name"+id).value);
+        console.log(document.getElementById(teamId+"Name"+id));
     }
 
     function updateData(teamId, id, field, value) {
@@ -690,7 +703,7 @@ too many names stored?
             player[field] = value;
             saveToLocalStorage();
         }
-        console.log(value); 
+        //console.log(value);
     }
 
     function rebuildUIFromData() {

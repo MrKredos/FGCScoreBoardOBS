@@ -57,9 +57,19 @@ TO DO:
 - adding the start.gg api key manually
 - searching for indiviual players instead of typing manually
 - crew battle
-- 2v2s for mario kart world
+- 2v2s for mario kart world (use crew battle). 
 
 Progress
+v2.7
+panel.html (crew battles QOL): 
+- no longer automatically updates
+  - added save button for each player.
+    - so that changes made are not shared until you want it to, and to save on performance (negligible, but it can add up)
+
+chrom-vs-cfalcon/gameOverlay.html: 
+- figured out hacky solution for reading localstorage
+  - everytime it detects and update to localstorage, it will destroy (if there is) the previous html, and then re-build the html for the player details. 
+
 v2.6
 Add crew battle capabilities and half-tone.css filter for fun or fun (I kinda just ripped off https://leanrada.com/notes/pure-css-halftone/ huge props to them!).
 Crewbattle capabilities also added, however they are very barebones and needed to get them shipped in like 3 days. I will continue to work on it however. 
@@ -75,11 +85,9 @@ panel.html/crewbattles-test.html (crewbattles-test.html is older version)
       - no need for save button   
     - reset all button
       - removes details from localStorage
-    - death button 
-      - details 
 
 half-tone.css
--
+- just black and white and only one layer. need to figure out how to use colour (separate layers for each colour).
 
 v2.5 panel.html
 - added "Grab start.gg details" buton
