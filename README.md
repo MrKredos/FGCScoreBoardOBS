@@ -17,50 +17,54 @@ Note: Tested with OBS 31.0.0-rc1, should theoretically work with most versions o
 
 ## List of Variable names used in localstorage
 ```
-pName1
-pName2
-pScore1
-pScore2
-pSponsor1
-pSponsor2
-pSponsor1
-pSponsor2
-pCharacter1 //UNUSED FOR NOW
-pCharacter2 //UNUSED FOR NOW
-pLosers1
-pLosers2
-cName1
-cName2
-cSponsor1
-cSponsor2
+__Players&Comms__
+pName1 to pName4
+pScore1 to pScore4
+pSponsor1 to pSponsor4
+pTwitter1 to pTwitter4
+pPronoun1 to pPronoun4
+pLosers1 to pLosers4
+cName1, cName2
+cSponsor1, cSponsor2
+
+__General__
 round
 game
-eName // event name
-eNumber // event interation number 
+eName 
+eNumber 
 
-Crew battles:
+__Crew battles__
 teamsData
   playerIdCounter
   names
   teamsData
-    teamA/teamB
+    teamA, teamB
       id
       pName
       pSponsor
       pTwitter
       pPronouns
+  
+__Unused__
+pCharacter1, pCharacter2 //might discontinue this idea, too many games to play around. 
 ```
 ## Changelog
 ```
-TO DO:
-- maybe change the variable names to match start.gg? 
-- adding the start.gg api key manually
-- searching for indiviual players instead of typing manually
-- crew battle
-- 2v2s for mario kart world (use crew battle). 
 
-Progress
+# Progress
 v2.7
+panel.html (p3&p4 functionality)
+- added p3 & p4 toggle 
+  - for free for alls/teams
+    - for teams, still need to find a way to dictate teams (possible with tick box)
+- small QoL changes listed below 
+  - toggle buttons change colour when toggled
+  - changed named of Swap Players to Swap P1&P2, because there is no way to swap with P3 and P4 atm. 
+
+working on mk world overlay, barebones.
+also cleaned up the repo a bit. needs more cleaning
+
+v2.61
 panel.html (crew battles QOL): 
 - no longer automatically updates
   - added save button for each player.
@@ -89,7 +93,8 @@ panel.html/crewbattles-test.html (crewbattles-test.html is older version)
 half-tone.css
 - just black and white and only one layer. need to figure out how to use colour (separate layers for each colour).
 
-v2.5 panel.html
+v2.5 
+panel.html
 - added "Grab start.gg details" buton
   - save button no longer picks up these details. 
 - ui changes
@@ -101,7 +106,8 @@ v2.5 panel.html
 - folder layout adjusted 
   - cleaner, examples for people who want to play around with some stuff
 
-v2.4 panel.html
+v2.4 
+panel.html
 - api reading from start.gg (very barebones, needs to be improved)
   - auto filling, barebones implementation
     - type in exact name and it will pick up pronoun and prefix. you are unable to change pronoun or prefix once adding, something to think about. 
@@ -119,11 +125,6 @@ v2.2:
 - adjusted positioning of buttons
 - added losers button + functionality   
   - swap works + delete + save
-
-need to do:
-- socials tag (twitter)
-- swap comms 
-- bracket link
 
 v2.1:
 - panel.html minor QOL changes
@@ -149,6 +150,13 @@ v1.0:
 
 ```
 
+## TO DO:
+- maybe change the variable names to match start.gg? 
+- adding the start.gg api key manually
+- searching for indiviual players instead of typing manually
+- crew battle
+- 2v2s for mario kart world (using crew battle). 
+- mario kart world 24 player
 ## WISHLIST: 
 - Everything
 - ~~Start.gg api implementation NEARLY THERE~~

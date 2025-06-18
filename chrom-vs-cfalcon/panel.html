@@ -1,34 +1,37 @@
 <!doctype html>
 
 <!--
+vars i'll be using
 
-__Players&Comms__
-pName1 to pName4
-pScore1 to pScore4
-pSponsor1 to pSponsor4
-pTwitter1 to pTwitter4
-pPronoun1 to pPronoun4
-pLosers1 to pLosers4
-cName1, cName2
-cSponsor1, cSponsor2
-
-__General__
-round
+pName1
+pName2
+pScore1
+pScore2
+pSponsor1
+pSponsor2
+pState1
+pState2
+pLosers1
+pLosers2
+pPronoun1
+pPronoun2
+pTwitter1
+pTwitter2
+cName1
+cName2
+cSponsor1
+cSponsor2
 game
-eName 
-eNumber 
+round
+pCharacter1 UNUSED FOR NOW
+pCharacter2 UNUSED FOR NOW
 
-__Crew battles__
-teamsData
-  playerIdCounter
-  names
-  teamsData
-    teamA, teamB
-      id
-      pName
-      pSponsor
-      pTwitter
-      pPronouns
+some minor issues: 
+what if name is mispelled, multiple of the same name will show 
+    rectified if we can delete single entries
+too many names stored?
+    doubt it'll reach that, otherwise we need to figure out how to cull names in future
+        count how many times it's been used? might make things more complicated
 -->
 <style>
     h1 {
@@ -94,8 +97,8 @@ teamsData
         background-color: #f0f0f0;
     }
 
-    .tabLinks:active {
-        /*background-color: #ff0000;*/
+    .tabLinks button.active {
+        background-color: #ccc;
     }
     #debug {
         background-color: #f5f5f5;
@@ -112,9 +115,8 @@ teamsData
     <body onLoad="init()">
         <h1><b>SCOREBOARD PANEL</b> by @patmeharder_</h1>
         <div class="tabs">
-            <button class="tabLinks" id="toggleCrewButton" onclick="toggleCrew()">Toggle Crew Battle</button>
-            <button class="tabLinks" id="toggleP3P4Button" onclick="toggleP3P4()">Toggle P3 & P4</button>
-            <div id="debug">...debug message...</div>
+            <button class="tabLinks" onclick="toggleCrew()">TOGGLE CREW BATTLE</button>
+            <div id="debug"></div>
         </div>
         <div id="tMain">
             <div id="scoreboard">
@@ -166,30 +168,8 @@ teamsData
                     <input type="checkbox" id="pLosers2" class="checkbox" />
                     <label class="checkboxLabel" for="pLosers2">(L)</label>
                 </div>
-                <div id="p3p4">
-                    <div id="areaPlayer3">
-                        P3
-                        <input type="text" id="pSponsor3" class="sponsor" placeholder="prefix" />
-                        <input type="text" id="pName3" class="name" placeholder="P1 NAME" />
-                        <input type="number" id="pScore3" class="score" placeholder="0" />
-                        <input type="text" id="pPronoun3" class="pronoun" placeholder="he/him" />
-                        <input type="text" id="pTwitter3" class="twitter" placeholder="twitter" />
-                        <input type="checkbox" id="pLosers3" class="checkbox" />
-                        <label class="checkboxLabel" for="pLosers3">(L)</label>
-                    </div>
-                    <div id="areaPlayer4">
-                        P4
-                        <input type="text" id="pSponsor4" class="sponsor" placeholder="prefix" />
-                        <input type="text" id="pName4" class="name" placeholder="P1 NAME" />
-                        <input type="number" id="pScore4" class="score" placeholder="0" />
-                        <input type="text" id="pPronoun4" class="pronoun" placeholder="he/him" />
-                        <input type="text" id="pTwitter4" class="twitter" placeholder="twitter" />
-                        <input type="checkbox" id="pLosers4" class="checkbox" />
-                        <label class="checkboxLabel" for="pLosers4">(L)</label>
-                    </div>
-                </div>
                 <div>
-                    <input type="submit" id="pSwap" value="Swap P1&P2" onClick="swapPlayers()" />
+                    <input type="submit" id="pSwap" value="Swap Players" onClick="swapPlayers()" />
                     <input type="submit" id="reset" value="Reset Scores" onClick="resetScores()" />
                     <input type="submit" class="delete" value="Delete Players" onClick="deletePlayerStorage()" />
                     <input type="submit" id="grabPlayers" value="Grab start.gg Details" onClick="searchObject()" />
@@ -272,7 +252,6 @@ teamsData
     // GLOBAL STUFF, extremely hacky
     let count = 0; // see end of savedRecords()
     let isCrewToggled = false; //toggle the crewbattle stuff
-    let isP3P4Toggled = false; //toggle p3 p4 stuff
 
     document.addEventListener("keydown", function (event) {
         // console.log(event.which); //debuggin
@@ -287,13 +266,6 @@ teamsData
     }
 
     function updateUI() {
-        for (let i = 1; i <= 2; i++) {
-            document.getElementById("pScore" + i).value = localStorage.getItem("pScore" + i);
-            document.getElementById("pName" + i).value = localStorage.getItem("pName" + i);
-            document.getElementById("pSponsor" + i).value = localStorage.getItem("pSponsor" + i);
-            document.getElementById("pPronoun" + i).value = localStorage.getItem("pPronoun" + i);
-            document.getElementById("pTwitter" + i).value = localStorage.getItem("pTwitter" + i);
-        } /*
         document.getElementById("pScore1").value = localStorage.getItem("pScore1");
         document.getElementById("pScore2").value = localStorage.getItem("pScore2");
         document.getElementById("pName1").value = localStorage.getItem("pName1");
@@ -304,7 +276,6 @@ teamsData
         document.getElementById("pPronoun2").value = localStorage.getItem("pPronoun2");
         document.getElementById("pTwitter1").value = localStorage.getItem("pTwitter1");
         document.getElementById("pTwitter2").value = localStorage.getItem("pTwitter2");
-        */
         document.getElementById("cName1").value = localStorage.getItem("cName1");
         document.getElementById("cName2").value = localStorage.getItem("cName2");
         document.getElementById("cSponsor1").value = localStorage.getItem("cSponsor1");
@@ -320,25 +291,21 @@ teamsData
         } else {
             document.getElementById("tCrew").style.display = "none";
         }
-        if (isP3P4Toggled) {
-            document.getElementById("p3p4").style.display = "block";
-        } else {
-            document.getElementById("p3p4").style.display = "none";
-        }
     }
 
     function saveRecords() {
         //saves input from text box to local storage
-        for (let i = 1; i <= 2; i++) {
-            // i = total players
-            localStorage.setItem("pScore" + i, document.getElementById("pScore" + i).value);
-            localStorage.setItem("pName" + i, document.getElementById("pName" + i).value);
-            localStorage.setItem("pSponsor" + i, document.getElementById("pSponsor" + i).value);
-            localStorage.setItem("pPronoun" + i, document.getElementById("pPronoun" + i).value);
-            localStorage.setItem("pTwitter" + i, document.getElementById("pTwitter" + i).value);
-        }
-
-        // commentators
+        // console.log(localStorage.getItem('pScore1'));
+        localStorage.setItem("pScore1", document.getElementById("pScore1").value);
+        localStorage.setItem("pScore2", document.getElementById("pScore2").value);
+        localStorage.setItem("pName1", document.getElementById("pName1").value);
+        localStorage.setItem("pName2", document.getElementById("pName2").value);
+        localStorage.setItem("pSponsor1", document.getElementById("pSponsor1").value);
+        localStorage.setItem("pSponsor2", document.getElementById("pSponsor2").value);
+        localStorage.setItem("pPronoun1", document.getElementById("pPronoun1").value);
+        localStorage.setItem("pPronoun2", document.getElementById("pPronoun2").value);
+        localStorage.setItem("pTwitter1", document.getElementById("pTwitter1").value);
+        localStorage.setItem("pTwitter2", document.getElementById("pTwitter2").value);
         localStorage.setItem("cName1", document.getElementById("cName1").value);
         localStorage.setItem("cName2", document.getElementById("cName2").value);
         localStorage.setItem("cSponsor1", document.getElementById("cSponsor1").value);
@@ -416,13 +383,21 @@ teamsData
         swap("pScore1", "pScore2");
         swap("pSponsor1", "pSponsor2");
         swap("pName1", "pName2");
-        swap("pPronoun1", "pPronoun2");
-        swap("pTwitter1", "pTwitter2");
+        //swap('pPronoun1', 'pPronoun2');
+        //swap('pTwitter1', 'pTwitter2');
 
         let tempSwap = document.getElementById("pLosers1").checked;
 
         localStorage.setItem("pLosers1", document.getElementById("pLosers2").checked);
         localStorage.setItem("pLosers2", tempSwap);
+
+        /*
+        let tempSwap = document.getElementById('pScore1').value;  
+        //console.log(document.getElementById('pScore1').value); 
+        
+        localStorage.setItem('pScore1', document.getElementById('pScore2').value); 
+        localStorage.setItem('pScore2', tempSwap);
+        */
 
         updateUI();
 
@@ -569,25 +544,6 @@ teamsData
     function toggleCrew() {
         isCrewToggled = !isCrewToggled;
         document.getElementById("debug").innerHTML = "crewbattle toggled " + isCrewToggled;
-        if (isCrewToggled) {
-            document.getElementById("toggleCrewButton").style.backgroundColor = "#ffff00";
-        } else {
-            document.getElementById("toggleCrewButton").style.background = null;
-        }
-
-        updateUI();
-        return;
-    }
-
-    function toggleP3P4() {
-        isP3P4Toggled = !isP3P4Toggled;
-        document.getElementById("debug").innerHTML = "p3p4 toggled " + isP3P4Toggled;
-        if (isP3P4Toggled) {
-            document.getElementById("toggleP3P4Button").style.backgroundColor = "#ffff00";
-        } else {
-            document.getElementById("toggleP3P4Button").style.background = null;
-        }
-
         updateUI();
         return;
     }
@@ -647,7 +603,7 @@ teamsData
         <button onclick="updatePlayer('${teamId}', ${id})" class="save">Save</button> 
         <br> 
         `;
-
+        
         console.log("creating player");
 
         return player;
@@ -729,12 +685,15 @@ teamsData
             container.querySelectorAll("input").forEach((input) => (input.value = ""));
         }
     }
-    function updateAll() {}
-
+    function updateAll() {
+        
+        
+    }
+    
     function updatePlayer(teamId, id) {
-        updateData(teamId, id, "pPronoun", document.getElementById(teamId + "Pronoun" + id).value);
-        updateData(teamId, id, "pName", document.getElementById(teamId + "Name" + id).value);
-        console.log(document.getElementById(teamId + "Name" + id));
+        updateData(teamId, id, "pPronoun", document.getElementById(teamId+"Pronoun"+id).value); 
+        updateData(teamId, id, "pName", document.getElementById(teamId+"Name"+id).value);
+        console.log(document.getElementById(teamId+"Name"+id));
     }
 
     function updateData(teamId, id, field, value) {
