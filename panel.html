@@ -287,7 +287,7 @@ teamsData
     }
 
     function updateUI() {
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 4; i++) {
             document.getElementById("pScore" + i).value = localStorage.getItem("pScore" + i);
             document.getElementById("pName" + i).value = localStorage.getItem("pName" + i);
             document.getElementById("pSponsor" + i).value = localStorage.getItem("pSponsor" + i);
@@ -329,7 +329,7 @@ teamsData
 
     function saveRecords() {
         //saves input from text box to local storage
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 4; i++) {
             // i = total players
             localStorage.setItem("pScore" + i, document.getElementById("pScore" + i).value);
             localStorage.setItem("pName" + i, document.getElementById("pName" + i).value);

@@ -1,0 +1,181 @@
+<!doctype html>
+
+<style>
+    @font-face {
+        font-family: "Expose";
+        src: url(fonts/Expose-Regular.otf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    @font-face {
+        font-family: "AkiraExpanded";
+        src: url(fonts/AkiraExpanded.otf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    body {
+        background-image: url(images/background.png);
+        background-color: rgba(0, 0, 0, 0.5);
+        font-family: "Expose";
+    }
+
+    #pContainer1,
+    #pContainer2,
+    #pContainer3,
+    #pContainer4 {
+        position: absolute;
+        top: 0px;
+        left: 281px;
+        height: 73px;
+        width: 427px;
+        /*
+        border: 2px solid black;
+        outline-style: solid;
+        outline-color: red;
+        */
+        display: flex;
+        align-items: top;
+        justify-content: center;
+        color: #ffffff;
+        background-color: black;
+        overflow: hidden;
+    }
+
+    #pContainer2,
+    #pContainer4 {
+        left: 1230px;
+    }
+
+    #pContainer3,
+    #pContainer4 {
+        top: 1006px;
+    }
+
+    .space {
+        font-size: 85px;
+    }
+
+    #pSponsor1,
+    #pSponsor2,
+    #pSponsor3,
+    #pSponsor4 {
+        position: relative;
+        color: black;
+        font-size: 100px;
+        z-index: 1;
+        font-family: "AkiraExpanded";
+        top: -21px;
+    }
+
+    #pName1,
+    #pName2,
+    #pName3,
+    #pName4 {
+        position: absolute;
+        font-size: 58px;
+        z-index: 2;
+        font-family: "Expose";
+    }
+    #pBox1,
+    #pBox2,
+    #pBox3,
+    #pBox4 {
+        position: absolute;
+        top: 5px;
+        left: 283px;
+        height: 64px;
+        width: 418px;
+        background: #5f03c4;
+        transform: rotate(2deg);
+        z-index: 0;
+    }
+
+    #pBox2,
+    #pBox4 {
+        left: 1235px;
+        transform: rotate(-2deg);
+    }
+
+    #pBox3,
+    #pBox4 {
+        top: 1008px;
+    }
+
+    #logo {
+        position: absolute;
+        top: 954px;
+        left: 838px;
+        width: 235px;
+        opacity: 0.5;
+    }
+</style>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+    </head>
+    <body onLoad="init()">
+        <div id="pContainer1">
+            <div id="pSponsor1"></div>
+            <div id="pName1"></div>
+        </div>
+        <div id="pBox1"></div>
+
+        <div id="roundContainer">
+            <div id="round"></div>
+        </div>
+
+        <div id="pContainer2">
+            <div id="pSponsor2"></div>
+            <div id="pName2"></div>
+        </div>
+        <div id="pBox2"></div>
+
+        <div id="pContainer3">
+            <div id="pSponsor3"></div>
+            <div id="pName3"></div>
+        </div>
+        <div id="pBox3"></div>
+
+        <div id="pContainer4">
+            <div id="pSponsor4"></div>
+            <div id="pName4"></div>
+        </div>
+        <div id="pBox4"></div>
+
+        <img src="images/logo.png" id="logo" />
+
+        <div id="debug"></div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    function updateUI() {
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById("pName" + i).innerHTML = localStorage.getItem("pName" + i);
+            document.getElementById("pSponsor" + i).innerHTML = localStorage.getItem("pSponsor" + i);
+        }
+    }
+
+    function init() {
+        window.addEventListener(
+            "storage",
+            function (e) {
+                // do your checks to detect\
+                updateUI();
+                document.getElement;
+                // changes in "e1", "e2" & "e3" here
+            },
+            false
+        );
+
+        window.addEventListener("storage", () => {
+            // When local storage changes, dump the list to
+            // the console.
+            console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+        });
+        updateUI();
+    }
+
+    function trimInput(input) {
+        return input.length > 10 ? input.substring(0, 10) + "..." : input;
+    }
+</script>

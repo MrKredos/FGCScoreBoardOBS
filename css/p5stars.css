@@ -1,0 +1,85 @@
+@keyframes increase {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes increaseFromCurrent {
+    to {
+        transform: scale(1);
+    }
+}
+
+body {
+    /*background-image: url(background.png);*/
+}
+:root {
+    --increase_length: 2s;
+}
+
+.star {
+    width: 300px;
+    aspect-ratio: 1;
+    background: #f8ca00;
+    /*
+  clip-path: polygon(50% 0,
+    calc(50%*(1 + sin(.4turn))) calc(50%*(1 - cos(.4turn))),
+    calc(50%*(1 - sin(.2turn))) calc(50%*(1 - cos(.2turn))),
+    calc(50%*(1 + sin(.2turn))) calc(50%*(1 - cos(.2turn))),
+    calc(50%*(1 - sin(.4turn))) calc(50%*(1 - cos(.4turn))) 
+   ); 
+    */
+
+    clip-path: polygon(50% 0, 79% 90%, 2% 35%, 98% 35%, 21% 90%);
+}
+
+.star2 {
+    width: 300px;
+    aspect-ratio: 1;
+    background: white;
+    position: absolute;
+
+    /*
+  clip-path: polygon(50% 0,
+    calc(50%*(1 + sin(.4turn))) calc(50%*(1 - cos(.4turn))),
+    calc(50%*(1 - sin(.2turn))) calc(50%*(1 - cos(.2turn))),
+    calc(50%*(1 + sin(.2turn))) calc(50%*(1 - cos(.2turn))),
+    calc(50%*(1 - sin(.4turn))) calc(50%*(1 - cos(.4turn))) 
+   ); 
+    */
+    clip-path: polygon(50% 0, 66% 33%, 100% 35%, 77% 63%, 85% 100%, 50% 82%, 15% 100%, 23% 63%, 0% 35%, 34% 33%);
+}
+/*
+#s1 {
+    position: absolute;
+    left: -135px;
+    rotate: 19deg;
+    top: 108px;
+    width: 578px;
+}
+
+#s2 {
+    position: absolute;
+    left: -9px;
+    rotate: -23deg;
+    top: -406px;
+    width: 1006px;
+}
+
+#s3 {
+    position: absolute;
+    left: -98px;
+    rotate: -23deg;
+    top: 312px;
+    width: 800px;
+}
+*/
+
+/*
+body {
+/*background-image: url(background.png);
+}
+*/

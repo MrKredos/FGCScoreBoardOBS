@@ -1,0 +1,305 @@
+<!-- this was made for trouble in OM3GA 3 tournament, nsw, aus!
+
+feel free to take inspiration, i would appreciate a shout out, but not necessary
+
+twitter: patmeharder_ 
+disc: patmeharder
+
+get in contact if you have any questions, happy to answer them if appropriate :) 
+-->
+
+<!DOCTYPE html>
+<style>
+    @font-face { 
+        font-family: 'AkiraExpanded'; 
+        src: url(../fonts/AkiraExpanded.otf); /* NEED TO CHANGE URLS FOR FONTS */ 
+    }
+    @font-face {
+        font-family: 'Kwark'; 
+        src: url(../fonts/Kwark.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+    @font-face {
+        font-family: 'Coolvectica'; 
+        src: url(../fonts/CoolveticaRg.otf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+    @font-face {
+        font-family: 'SeriousShannsBold'; 
+        src: url(../fonts/SeriousShannsBold.otf);
+    }
+    @font-face {
+        font-family: 'RawhideRaw2016'; 
+        src: url(../fonts/RawhideRaw2016-qM6l.ttf);
+    }
+    @font-face {
+        font-family: 'RobotoBoldCondensed'; 
+        src: url(../fonts/RobotoBoldCondensed.ttf);
+    }
+    @font-face {
+        font-family: 'BebasNeue';
+        src: url(../fonts/BebasNeue.otf); 
+    }
+    
+    @font-face {
+        font-family: 'RobotoBlack'; 
+        src: url(../fonts/RobotoBlack.ttf);
+    }
+
+    html {
+        font-family: 'AkiraExpanded';
+        color: white; 
+    }
+    
+    body {
+        /* background-color: grey; */
+        /* background: url(test2.png) no-repeat; /* remove me */ 
+    } 
+    
+    #score1, #score2 {
+        position: absolute;
+        left: 387px;
+        top: 10px;
+        width: 175px;
+        height: 100px;
+    }
+    
+    #score2 {
+        left: 1338px;
+    }
+    
+    #pScore1, #pScore2 {
+        text-align: right;
+        color: white; 
+        font-size: 99px;
+    }
+    
+    #pScore2 {
+        text-align: left; 
+    }
+    
+    #sponsorPronoun1, #sponsorPronoun2 {
+        color: darkgrey;
+        position: absolute;
+        left: 392px;
+        top: 165px;    
+        font-size: 30px;
+        justify-content: left;
+        display: flex;
+        align-items: center;
+    }
+
+    #sponsorPronoun2 {
+        left: 913px;
+        width: 600px;
+        height: 30px;
+        text-align: right;
+        justify-content: right; 
+    }
+
+    #pName1, #pName2 {
+        font-size: 63px;
+        position: absolute;
+        left: 396px;
+        top: 94px;  
+        font-family: 'RobotoBlack';
+    }
+    
+    #pName2 {
+        left: 805px;
+        width: 705px;
+        height: 34px;
+        text-align: right;
+    }
+    
+    #pPronoun1, #pPronoun2 {
+        color: white; 
+    }
+    
+    #roundContainer {
+        
+        position: absolute; 
+        /*left: 600px; */
+        top: -7px;
+        justify-content: center;
+        width: 1920px;
+        
+    }
+    #round {
+        font-size: 40px; 
+        text-align: center;
+    }
+    
+    #VS {
+        position:absolute; 
+        left: 901px;
+        top: 131px;
+        font-size: 64px;
+    }
+    
+    #mic {
+        position: absolute;
+        left: 944px;
+        top: 1030px;
+        font-size: 50px;
+    }
+    
+    #pVContainer1, #pVContainer2 {
+        position: absolute;
+        left: 150px;
+        top: 0px;
+        text-align: center;
+        color: black; 
+    }
+    
+    .vertical-container {
+        flex-direction: column; 
+        top: 0px; 
+        bottom: 0px; 
+        margin: 0, 0, 0, 0; 
+    }
+
+
+    /* background-color: rgba(0, 0, 0, 0.3); */
+
+
+    #cName1, #cName2 {
+        position: absolute; 
+        left: 416px;
+        top: 1051px;
+        height: 35px;
+        width: 500px;
+        font-size: 28px;
+        text-align: right;
+    }
+    
+    #cName2 {
+        left: 999px;
+        text-align: left;
+    }
+    
+    
+
+
+    
+</style>
+<script type="text/javascript"> 
+    function updateUI() { 
+        document.getElementById('pName1').innerHTML = localStorage.getItem('pName1'); 
+        document.getElementById('pName2').innerHTML = localStorage.getItem('pName2'); 
+        
+        document.getElementById('pSponsor1').innerHTML = localStorage.getItem('pSponsor1');
+        document.getElementById('pSponsor2').innerHTML = localStorage.getItem('pSponsor2');
+        
+        let score1 = localStorage.getItem('pScore1');
+        //document.getElementById('debug').innerHTML = score1; 
+        if (score1.length == 1 ) {
+            score1 = "0" + score1; 
+        } else if (score1.length == 0 || score1.length == null) {
+            score1 = "00"; 
+        }
+        
+        let score2 = localStorage.getItem('pScore2');
+        if (score2.length == 1 ) {
+            score2 = "0" + score2; 
+        } else if (score2.length == 0 || score2.length == null) {
+            score2 = "00"; 
+        }
+        
+        document.getElementById('pScore1').innerHTML = score1; 
+        document.getElementById('pScore2').innerHTML = score2; 
+        
+        document.getElementById('pPronoun1').innerHTML = localStorage.getItem('pPronoun1');
+        document.getElementById('pPronoun2').innerHTML = localStorage.getItem('pPronoun2');
+        
+        document.getElementById('round').innerHTML = localStorage.getItem('round');
+        
+        let cName1 = localStorage.getItem('cName1'); 
+        let cName2 = localStorage.getItem('cName2'); 
+        
+        if ((cName1 == null || cName1 == "") && (cName2 == null || cName2 == "")) {
+            document.getElementById('mic').style.display = 'none'; 
+        } else {
+            document.getElementById('mic').style.display = 'block'; 
+        }
+        
+        document.getElementById('cName1').innerHTML = localStorage.getItem('cName1');
+        document.getElementById('cName2').innerHTML = localStorage.getItem('cName2');
+    }
+    
+
+    function init(){
+        
+        window.addEventListener("storage", function (e) {
+        // do your checks to detect\
+        updateUI()
+        document.getElement
+        // changes in "e1", "e2" & "e3" here
+        }, false);
+
+        window.addEventListener("storage", () => {
+        // When local storage changes, dump the list to
+        // the console.
+        console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+        });
+        updateUI();
+        
+    }
+    
+</script>
+
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    
+    
+    <body onLoad="init()">
+
+        <div id="pContainer1">
+            <div id="score1">
+                <div id="pScore1">05</div>
+            </div>
+            <div id="sponsorPronoun1"> 
+                <div id="pSponsor1">Test</div>
+                <div class="space" id="pSpace1">&thinsp;</div>
+                <div id="pPronoun1">he/him</div>
+            </div>
+            <div id="pName1">Player 1</div>
+        </div>
+        <div id='roundContainer'>
+            <div id='round'>Winners Semi Finals</div>
+        </div>
+        
+        <div id='VS'>VS</div>
+        
+        <div id="pContainer2">
+            <div id="score2">
+                <div id="pScore2">03</div>
+            </div>
+            
+            <div id="sponsorPronoun2"> 
+                <div id="pPronoun2">she/shim</div>
+                
+                <div class="space" id="pSpace2">&thinsp;</div>
+                <div id="pSponsor2">Test</div>
+            </div>
+            <div id="pName2">Player 2</div>
+
+        
+        
+        </div>
+        <div id="mic">
+            <i class="fa fa-microphone" style="color:lightgrey;"></i>
+        </div>
+        <div id="cName1">Commentator 1</div>
+        <div id="cName2">Commentator 2</div>
+  
+        
+        <div id="debug"></div>
+    
+        
+    </body>
+</html>
+

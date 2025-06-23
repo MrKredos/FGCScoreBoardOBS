@@ -51,7 +51,28 @@ pCharacter1, pCharacter2 //might discontinue this idea, too many games to play a
 ## Changelog
 ```
 
-# Progress
+Progress
+v2.8 
+organised the repo a bit more, 
+- demos folder for all of my work/examples.
+- moved test*.html to css folder where they belong. 
+
+panel.html
+- corrected some issues, was only editing p1 and p2, not p3 or p4. 
+  - changed some values to get it working. 
+
+css/p5stars.css & p5stars-test.html
+- created a background to emulate persona 5 stars background, took a lot of work for probably one of the worst implementations ever lol
+  - my implementation is basically, it creates a new star that expands out, and destroys itself after sometime, can adjust values; 
+    - frequency = cooldown before creating the next star
+    - speed = how fast the stars move
+    - you can already imagine the performance issues with this one, 30 stars * maybe 10 stars to emulate the moving sensation * every 0.5 seconds lol.
+  - was going to improve on this but i don't think i will be using this in future.
+    - i need a better implementation if i plan on continuing this, and i think the solution is either:
+      - 1. processing.js -> create something using that wont use as much resources (i already have some sort of idea for this one)
+      - 2. after effects and just add it to the website (which I am probably gonna do). 
+- do not recommend using, maybe for learning purposes, on what not to do lol. 
+
 v2.7
 panel.html (p3&p4 functionality)
 - added p3 & p4 toggle 

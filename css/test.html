@@ -1,0 +1,69 @@
+<style>
+.stack {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 100px auto;
+}
+
+.shape {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  animation: increase 2s ease-in-out;
+}
+
+@keyframes increase {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+    </head>
+    <body>
+ <div class="stack"></div>
+    </body>
+</html>
+
+
+<script> 
+const stack = document.querySelector('.stack');
+const colors = ['red', 'blue'];
+let index = 0;
+
+setInterval(() => {
+  const shape = document.createElement('div');
+  shape.classList.add('shape');
+  shape.style.backgroundColor = colors[index % colors.length];
+  shape.style.animation = 'increase 5s linear forwards';
+  shape.style.zIndex = 0;
+
+  stack.appendChild(shape);
+
+  // Remove after animation completes
+  setTimeout(() => {
+    stack.removeChild(shape);
+  }, 2000);
+
+  index++;
+}, 500); // launch every 500ms
+
+</script>

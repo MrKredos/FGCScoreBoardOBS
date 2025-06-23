@@ -1,0 +1,155 @@
+<!doctype html>
+
+<style>
+    body {
+        background-color: grey;
+    }
+</style>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link rel="stylesheet" href="p5stars.css" />
+    </head>
+
+    <body onload="randomiseStars(30, 300, 1000, 30)">
+        <div id="container"></div>
+        <!-- 
+        <input type="range" min="4" max="30" value="5" step="1" oninput="setSize(event)"/>
+        <input type="range" min="0.5" max="0.9" value="0.6" step="0.01" oninput="setBleed(event)" />
+        <input type="range" min="0" max="360" value="0" step="0.1" oninput="setRotate(event)" />
+        -->
+        <!-- 
+        <div class="star2" id="s1"></div>
+        <div class="star2" id="s2"></div>
+        <div class="star2" id="s3"></div>
+        <div class="star2" id="s4"></div>
+        <div class="star2" id="s5"></div>
+-->
+    </body>
+</html>
+
+<script>
+    /*  current issues:
+    - if reversed, need a way to figure out layering (if i spawn them, )
+    - starts off with just a star, and slowly builds up to it. need a way to make it seemless. 
+
+    How? I'm not sure, I would assume when you create a new layer, it will automatically add one.
+    values to adjust
+    - id of the star? nah probably not.
+    - actually, don't even need to do anything. just make sure it doesn't automatically appear.
+    - color.
+*/
+    let frequency = 500; //ms
+    let speed = "5s"; //seconds: shorter = faster
+    let stack = null;
+    const colors = ["#4800dd", "white"];
+    const indexMap = new WeakMap(); // Store individual index for each element
+
+    function randomiseStars(total, minSize, maxSize, maxRotation) {
+        //const starList[]; 
+        for (let i = 0; i <= total; i++) {
+            const star = document.createElement("div");
+
+            star.classList.add("star2");
+            star.id = "s" + i;
+
+            const size = Math.floor(Math.random() * maxSize) + minSize;
+            star.style.width = size + "px";
+
+            star.style.position = "absolute";
+
+            const randX = Math.floor(Math.random() * 1920) - (maxSize/2);
+            console.log(randX);
+            star.style.left = randX + "px";
+
+            const randY = Math.floor(Math.random() * 1080) - (maxSize/2);
+            star.style.top = randY + "px";
+
+            const rotation = Math.floor(Math.random() * maxRotation) - maxRotation;
+            star.style.rotate = rotation + "deg";
+
+            document.getElementById("container").appendChild(star);
+            
+            // will only spawn if not within radius; 
+            
+            //starList.append(maxSize/2, 
+        }
+        
+        
+        stack = document.querySelectorAll(".star2");
+        initStars(stack);
+    }
+
+    function initStars(stack) {
+        //initialises the stars, but presetting them, so that it stars from the start.
+
+        for (let i = 0; i < stack.length; i++) {
+            for (let j = (speed[0] * 1000) / frequency; j >= 0; j--) {
+                // Initialize index for this element if not already set
+                if (!indexMap.has(stack[i])) {
+                    indexMap.set(stack[i], 0);
+                }
+
+                let currentIndex = indexMap.get(stack[i]);
+                const scaleIncrement = 1 / ((speed[0] * 1000) / frequency); // amount of stars to initialise
+
+                const styles = getComputedStyle(stack[i]);
+                const shape = document.createElement("div");
+                shape.classList.add("star2");
+                shape.style.width = styles.width;
+
+                shape.style.backgroundColor = colors[currentIndex % colors.length];
+
+                shape.style.rotate = "0deg";
+                //shape.style.scale = scaleIncrement * j;
+                shape.style.animation = "increase " + speed + " linear";
+                shape.style.animationDelay = "-" + frequency * j + "ms";
+                stack[i].appendChild(shape);
+                indexMap.set(stack[i], currentIndex + 1);
+
+                // removes after animation is finished, for clean up
+                setTimeout(() => {
+                    stack[i].removeChild(shape);
+                }, convertStoMS(speed));
+            }
+        }
+    }
+
+    function convertStoMS(number) {
+        // the star out of scene will eventually disappear.
+        let temp = number[0];
+        return temp * 1000 + (temp * 1000) / 1.5;
+    }
+
+    setInterval(() => {
+        for (let i = 0; i < stack.length; i++) {
+            const styles = getComputedStyle(stack[i]);
+            // Initialize index for this element if not already set
+            if (!indexMap.has(stack[i])) {
+                indexMap.set(stack[i], 0);
+            }
+
+            // Get and update index
+            let currentIndex = indexMap.get(stack[i]);
+
+            const shape = document.createElement("div");
+            shape.classList.add("star2");
+            shape.style.width = styles.width;
+            shape.style.backgroundColor = colors[currentIndex % colors.length];
+            shape.style.animation = "increase " + speed + " linear";
+            shape.style.rotate = "0deg";
+
+            stack[i].appendChild(shape);
+
+            // removes after animation is finished, for clean up
+            setTimeout(() => {
+                stack[i].removeChild(shape);
+            }, convertStoMS(speed));
+
+            indexMap.set(stack[i], currentIndex + 1); // Increment for next use
+        }
+    }, frequency); // launch every 500ms
+    
+</script>
