@@ -52,6 +52,14 @@ pCharacter1, pCharacter2 //might discontinue this idea, too many games to play a
 ```
 
 Progress
+v2.9 POST OMEGA 4 
+added demo for OMEGA 4 stuff (more like examples, i'll show demos whenever i feel like it (never))
+
+panel.html 
+- removed msg, don't really plan on using it any time soon. 
+- change some of the JS stuff to be more scalable for multiple players (for 4 players at the moment)
+- cleaned up some of the code 
+
 v2.8 
 organised the repo a bit more, 
 - demos folder for all of my work/examples.

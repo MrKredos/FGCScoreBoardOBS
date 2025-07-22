@@ -1,0 +1,274 @@
+<!-- this was made for trouble in OMEGA 4 tournament, nsw, aus!
+
+feel free to take inspiration, i would appreciate a shout out, but not necessary
+
+twitter: patmeharder_ 
+disc: patmeharder
+
+get in contact if you have any questions, happy to answer them if appropriate :) 
+-->
+
+<!doctype html>
+<style>
+    @font-face {
+        font-family: "ArtDeco";
+        src: url(fonts/ArtdecoMNRegular.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+    @font-face {
+        font-family: "CopperplateGothicBold";
+        src: url(fonts/CopperplateGothicBold.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    @font-face {
+        font-family: "BrushScript";
+        src: url(fonts/BrushScriptMT.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    html {
+        font-family: "CopperplateGothicBold";
+        /* background-color: grey; */
+        color: #f5e1cb;
+    }
+
+    body {
+        text-shadow: 1px 1px 10px #23394b;
+    }
+
+    #background {
+        background: url(images/test3.png) no-repeat; /* remove me */
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.5;
+        z-index: -1;
+    }
+
+    #score1,
+    #score2 {
+        position: absolute;
+        left: 705px;
+        top: 1019px;
+        width: 175px;
+        height: 100px;
+        justify-content: center;
+    }
+
+    #score2 {
+        left: 1035px;
+    }
+
+    #pScore1,
+    #pScore2 {
+        font-family: "BrushScript";
+        text-align: right;
+
+        font-size: 58px;
+    }
+
+    #pScore2 {
+        text-align: left;
+    }
+
+    #pContainer1,
+    #pContainer2,
+    #pContainer3,
+    #pContainer4 {
+        position: absolute;
+        top: -3px;
+        left: 96px;
+        font-size: 50px;
+        width: 683px;
+    }
+
+    #pContainer2,
+    #pContainer4 {
+        left: 1141px;
+        text-align: right;
+    }
+
+    #pContainer3,
+    #pContainer4 {
+        top: 1028px;
+    }
+
+    #sponsorContainer1,
+    #sponsorContainer2 {
+        rotate: -90deg;
+        position: absolute;
+        left: -214px;
+        top: 695px;
+        font-size: 60px;
+        color: #fab858;
+        width: 500px;
+    }
+
+    #sponsorContainer2 {
+        left: 1633px;
+    }
+
+    #roundContainer,
+    #gameContainer {
+        rotate: -90deg;
+        position: absolute;
+        left: -500px;
+        top: 512px;
+        text-align: center;
+        width: 1080px;
+        font-size: 50px;
+    }
+    #roundContainer {
+        left: 1338px;
+    }
+
+    #box1,
+    #box2,
+    #box3 {
+        position: absolute;
+        top: 3px;
+        left: 87px;
+        height: 1074px;
+        width: 1746px;
+        outline: solid;
+        outline-width: 3px;
+        outline-color: #fab858;
+    }
+
+    #box1 {
+        top: 50px;
+        left: 3px;
+        height: 980px;
+        width: 1914px;
+        outline-color: white;
+    }
+
+    #box3 {
+        top: 3px;
+        left: 748px;
+        width: 422px;
+        height: 235px;
+    }
+
+    #mic {
+        position: absolute;
+        left: 946px;
+        top: 992px;
+        font-size: 35px;
+    }
+
+    #cName1,
+    #cName2 {
+        position: absolute;
+        left: 434px;
+        top: 997px;
+        height: 35px;
+        width: 500px;
+        font-size: 28px;
+        text-align: right;
+    }
+
+    #cName2 {
+        left: 986px;
+        text-align: left;
+    }
+</style>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    </head>
+
+    <body onLoad="init()">
+        <!-- 
+        <div id="background"></div>
+-->
+
+        <div id="box1"></div>
+        <div id="box2"></div>
+        <!-- <div id="box3"></div> -->
+
+        <div id="roundContainer">
+            <div id="round">Winners Semi Finals</div>
+        </div>
+        <div id="gameContainer">
+            <div id="game">Smash Ultimate</div>
+        </div>
+
+        <div id="pContainer1">
+            <div id="pName1">Player 1</div>
+        </div>
+
+        <div id="pContainer2">
+            <div id="pName2">Player 2</div>
+        </div>
+
+        <div id="pContainer3">
+            <div id="pName3">Player 3</div>
+        </div>
+
+        <div id="pContainer4">
+            <div id="pName4">Player 4</div>
+        </div>
+
+        <div id="mic">
+            <i class="fa fa-microphone" style="color: lightgrey"></i>
+        </div>
+        <div id="cName1">Commentator 1</div>
+        <div id="cName2">Commentator 2</div>
+
+        <div id="debug"></div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    function updateUI() {
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById("pName" + i).innerHTML = localStorage.getItem("pName" + i);
+        }
+
+        document.getElementById("round").innerHTML = localStorage.getItem("round");
+
+        document.getElementById("game").innerHTML = localStorage.getItem("game");
+
+        let cName1 = localStorage.getItem("cName1");
+        let cName2 = localStorage.getItem("cName2");
+
+        if ((cName1 == null || cName1 == "") && (cName2 == null || cName2 == "")) {
+            document.getElementById("mic").style.display = "none";
+        } else {
+            document.getElementById("mic").style.display = "block";
+        }
+
+        document.getElementById("cName1").innerHTML = localStorage.getItem("cName1");
+        document.getElementById("cName2").innerHTML = localStorage.getItem("cName2");
+    }
+
+    function init() {
+        window.addEventListener(
+            "storage",
+            function (e) {
+                // do your checks to detect\
+                updateUI();
+                document.getElement;
+                // changes in "e1", "e2" & "e3" here
+            },
+            false
+        );
+
+        window.addEventListener("storage", () => {
+            // When local storage changes, dump the list to
+            // the console.
+            console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+        });
+        updateUI();
+    }
+
+    function trimInput(input) {
+        return input.length > 10 ? input.substring(0, 10) + "..." : input;
+    }
+</script>

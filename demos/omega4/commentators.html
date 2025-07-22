@@ -1,0 +1,183 @@
+<!-- this was made for trouble in OMEGA 4 tournament, nsw, aus!
+
+feel free to take inspiration, i would appreciate a shout out, but not necessary
+
+twitter: patmeharder_ 
+disc: patmeharder
+
+get in contact if you have any questions, happy to answer them if appropriate :) 
+-->
+
+<!doctype html>
+<style>
+    @font-face {
+        font-family: "ArtDeco";
+        src: url(fonts/ArtdecoMNRegular.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+    @font-face {
+        font-family: "CopperplateGothicBold";
+        src: url(fonts/CopperplateGothicBold.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    @font-face {
+        font-family: "BrushScript";
+        src: url(fonts/BrushScriptMT.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    html {
+        font-family: "CopperplateGothicBold";
+        
+        color: #f5e1cb;
+        
+        /* background-color: grey; */
+    }
+
+    body {
+        text-shadow: 1px 1px 10px #23394b;
+    }
+
+    #background {
+        background: url(images/test.png) no-repeat; /* remove me */
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.5;
+        z-index: -1;
+    }
+
+    #cContainer1,
+    #cContainer2 {
+        position: absolute;
+        top: 1013px;
+        left: 50px;
+        font-size: 63px;
+        width: 861px;
+        text-align: right;
+    }
+
+    #cContainer2 {
+        left: 1025px;
+        text-align: left;
+    }
+
+    #roundContainer,
+    #gameContainer {
+        rotate: -90deg;
+        position: absolute;
+        left: -368px;
+        top: 388px;
+        text-align: right;
+        width: 809px;
+        font-size: 50px;
+    }
+    #roundContainer {
+        left: 1482px;
+    }
+    #box1,
+    #box2 {
+        position: absolute;
+        top: 3px;
+        left: 73px;
+        height: 1074px;
+        width: 1774px;
+        outline: solid;
+        outline-width: 3px;
+        outline-color: #fab858;
+    }
+
+    #box1 {
+        top: 3px;
+        left: 3px;
+        height: 996px;
+        width: 1914px;
+        outline-color: white;
+    }
+
+    #mic {
+        position: absolute;
+        left: 946px;
+        top: 1006px;
+        font-size: 68px;
+    }
+</style>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    </head>
+
+    <body onLoad="init()">
+        <!-- 
+        <div id="background"></div>
+-->
+
+        <div id="roundContainer">
+            <div id="round">Winners Semi Finals</div>
+        </div>
+        <div id="gameContainer">
+            <div id="game">Smash Ultimate</div>
+        </div>
+
+        <div id="box1"></div>
+        <div id="box2"></div>
+
+        <div id="mic">
+            <i class="fa fa-microphone" style="color: lightgrey"></i>
+        </div>
+        <div id="cContainer1">
+            <div id="cName1">Commentator 1</div>
+        </div>
+
+        <div id="cContainer2">
+            <div id="cName2">Commentator 2</div>
+        </div>
+
+        <div id="debug"></div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    function updateUI() {
+        document.getElementById("round").innerHTML = localStorage.getItem("round");
+
+        document.getElementById("game").innerHTML = localStorage.getItem("game");
+
+        let cName1 = localStorage.getItem("cName1");
+        let cName2 = localStorage.getItem("cName2");
+
+        document.getElementById("cName1").innerHTML = localStorage.getItem("cName1");
+        document.getElementById("cName2").innerHTML = localStorage.getItem("cName2");
+    }
+
+    function init() {
+        
+        window.addEventListener(
+            "storage",
+            function (e) {
+                // do your checks to detect\
+                updateUI();
+                document.getElement;
+                // changes in "e1", "e2" & "e3" here
+            },
+            false
+        );
+
+        window.addEventListener("storage", () => {
+            // When local storage changes, dump the list to
+            // the console.
+            console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+        });
+        updateUI();
+        
+    }
+
+    function trimInput(input) {
+        return input.length > 10 ? input.substring(0, 10) + "..." : input;
+    }
+</script>

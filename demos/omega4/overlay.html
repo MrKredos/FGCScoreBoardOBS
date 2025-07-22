@@ -1,0 +1,279 @@
+<!-- this was made for trouble in OMEGA 4 tournament, nsw, aus!
+
+feel free to take inspiration, i would appreciate a shout out, but not necessary
+
+twitter: patmeharder_ 
+disc: patmeharder
+
+get in contact if you have any questions, happy to answer them if appropriate :) 
+-->
+
+<!doctype html>
+<style>
+    @font-face {
+        font-family: "ArtDeco";
+        src: url(fonts/ArtdecoMNRegular.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+    @font-face {
+        font-family: "CopperplateGothicBold";
+        src: url(fonts/CopperplateGothicBold.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    @font-face {
+        font-family: "BrushScript";
+        src: url(fonts/BrushScriptMT.ttf); /* NEED TO CHANGE URLS FOR FONTS */
+    }
+
+    html {
+        font-family: "CopperplateGothicBold";
+        /* background-color: grey; */
+        color: #f5e1cb;
+    }
+
+    body {
+        text-shadow: 1px 1px 10px #23394b;
+    }
+
+    #background {
+        background: url(images/test.png) no-repeat; /* remove me */
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 1920px;
+        height: 1080px;
+        opacity: 0.5;
+        z-index: -1;
+    }
+
+    #score1,
+    #score2 {
+        position: absolute;
+        left: 705px;
+        top: 977px;
+        width: 175px;
+        height: 100px;
+        justify-content: center;
+    }
+
+    #score2 {
+        left: 1035px;
+    }
+
+    #pScore1,
+    #pScore2 {
+        font-family: "BrushScript";
+        text-align: right;
+
+        font-size: 105px;
+    }
+
+    #pScore2 {
+        text-align: left;
+    }
+
+    #pName1,
+    #pContainer2 {
+        position: absolute;
+        top: 996px;
+        left: 77px;
+        font-size: 77px;
+        width: 683px;
+    }
+
+    #pContainer2 {
+        left: 1160px;
+        text-align: right;
+    }
+
+    #sponsorContainer1,
+    #sponsorContainer2 {
+        rotate: -90deg;
+        position: absolute;
+        left: -214px;
+        top: 695px;
+        font-size: 60px;
+        color: #fab858;
+        width: 500px;
+    }
+
+    #sponsorContainer2 {
+        left: 1633px;
+    }
+
+    #roundContainer,
+    #gameContainer {
+        rotate: -90deg;
+        position: absolute;
+        left: -368px;
+        top: 388px;
+        text-align: right;
+        width: 809px;
+        font-size: 50px;
+    }
+    #roundContainer {
+        left: 1482px;
+    }
+    #box1,
+    #box2 {
+        position: absolute;
+        top: 3px;
+        left: 73px;
+        height: 1074px;
+        width: 1774px;
+        outline: solid;
+        outline-width: 3px;
+        outline-color: #fab858;
+    }
+
+    #box1 {
+        top: 3px;
+        left: 3px;
+        height: 996px;
+        width: 1914px;
+        outline-color: white;
+    }
+
+    #mic {
+        position: absolute;
+        left: 946px;
+        top: 961px;
+        font-size: 35px;
+    }
+
+    #cName1,
+    #cName2 {
+        position: absolute;
+        left: 434px;
+        top: 966px;
+        height: 35px;
+        width: 500px;
+        font-size: 28px;
+        text-align: right;
+    }
+
+    #cName2 {
+        left: 986px;
+        text-align: left;
+    }
+</style>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    </head>
+
+    <body onLoad="init()">
+        <!-- 
+        <div id="background"></div>
+-->
+
+        <div id="score1">
+            <div id="pScore1">5</div>
+        </div>
+        <div id="sponsorContainer1">
+            <div id="pSponsor1">Test</div>
+        </div>
+        <div id="sponsorContainer2">
+            <div id="pSponsor2">Test</div>
+        </div>
+
+        <div id="pName1">Player 1</div>
+
+        <div id="roundContainer">
+            <div id="round">Winners Semi Finals</div>
+        </div>
+        <div id="gameContainer">
+            <div id="game">Smash Ultimate</div>
+        </div>
+
+        <div id="score2">
+            <div id="pScore2">3</div>
+        </div>
+
+        <div id="pContainer2">
+            <div id="pName2">Player 2</div>
+        </div>
+
+        <div id="box1"></div>
+        <div id="box2"></div>
+
+        <div id="mic">
+            <i class="fa fa-microphone" style="color: lightgrey"></i>
+        </div>
+        <div id="cName1">Commentator 1</div>
+        <div id="cName2">Commentator 2</div>
+
+        <div id="debug"></div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    function updateUI() {
+        let playerName1 = localStorage.getItem("pName1");
+        let playerName2 = localStorage.getItem("pName2");
+
+        // adding (L) or (W)
+        if (localStorage.getItem("pLosers1") == "true" || localStorage.getItem("pLosers2") == "true") {
+            var loserStr1 = localStorage.getItem("pLosers1") == "true" ? " [L]" : " [W]";
+            var loserStr2 = localStorage.getItem("pLosers2") == "true" ? " [L]" : " [w]";
+
+            playerName1 = trimInput(playerName1);
+            +loserStr1;
+            playerName2 = trimInput(playerName2);
+            +loserStr2;
+        }
+
+        document.getElementById("pName1").innerHTML = playerName1;
+        document.getElementById("pName2").innerHTML = playerName2;
+
+        document.getElementById("pSponsor1").innerHTML = localStorage.getItem("pSponsor1").toUpperCase();
+        document.getElementById("pSponsor2").innerHTML = localStorage.getItem("pSponsor2").toUpperCase();
+
+        document.getElementById("pScore1").innerHTML = localStorage.getItem("pScore1");
+        document.getElementById("pScore2").innerHTML = localStorage.getItem("pScore2");
+
+        document.getElementById("round").innerHTML = localStorage.getItem("round");
+
+        document.getElementById("game").innerHTML = localStorage.getItem("game");
+
+        let cName1 = localStorage.getItem("cName1");
+        let cName2 = localStorage.getItem("cName2");
+
+        if ((cName1 == null || cName1 == "") && (cName2 == null || cName2 == "")) {
+            document.getElementById("mic").style.display = "none";
+        } else {
+            document.getElementById("mic").style.display = "block";
+        }
+
+        document.getElementById("cName1").innerHTML = localStorage.getItem("cName1");
+        document.getElementById("cName2").innerHTML = localStorage.getItem("cName2");
+    }
+
+    function init() {
+        window.addEventListener(
+            "storage",
+            function (e) {
+                // do your checks to detect\
+                updateUI();
+                document.getElement;
+                // changes in "e1", "e2" & "e3" here
+            },
+            false
+        );
+
+        window.addEventListener("storage", () => {
+            // When local storage changes, dump the list to
+            // the console.
+            console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+        });
+        updateUI();
+    }
+
+    function trimInput(input) {
+        return input.length > 10 ? input.substring(0, 10) + "..." : input;
+    }
+</script>
