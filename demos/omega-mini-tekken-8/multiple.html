@@ -1,0 +1,220 @@
+<!-- this was made for trouble in OMEGA MINI: Tekken 8 tournament, nsw, aus!
+
+feel free to take inspiration, i would appreciate a shout out, but not necessary
+
+twitter: patmeharder_ 
+disc: patmeharder
+
+get in contact if you have any questions, happy to answer them if appropriate :) 
+-->
+
+<!doctype html>
+<style>
+	@font-face {
+		font-family: "Brushot";
+		src: url(fonts/Brushot-Bold.otf); /* NEED TO CHANGE URLS FOR FONTS */
+	}
+	@font-face {
+		font-family: "ChunkyFunks";
+		src: url("fonts/Chunky Funks.otf"); /* NEED TO CHANGE URLS FOR FONTS */
+	}
+	html {
+		font-family: "ChunkyFunks";
+		color: #fff;
+	}
+
+	body {
+		/* background-color: grey; */
+	}
+
+	#background {
+		/*
+		background: url(images/test2.png) no-repeat; /* remove me */
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 1080px;
+		width: 1920px;
+
+		opacity: 0.5;
+		z-index: -1;
+	}
+
+	#box1,
+	#box2,
+	#box3,
+	#box4,
+	#box5 {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 286px;
+		width: 1914px;
+		background-color: #dd2629;
+	}
+
+	#box1 {
+		top: 1010px;
+		left: 0;
+		height: 70px;
+		width: 1914px;
+	}
+
+	#box2 {
+		height: 36px;
+		top: 240px;
+		width: 1438px;
+	}
+
+	#box3,
+	#box4,
+	#box5 {
+		height: 240px;
+		width: 23px;
+		left: 482px;
+	}
+
+	#box4 {
+		left: 913px;
+	}
+
+	#box5 {
+		left: 1416px;
+		height: 1010px;
+	}
+
+	#roundContainer,
+	#gameContainer {
+		text-shadow: -5px 3px #000;
+		position: absolute;
+		top: 953px;
+		left: 11px;
+		font-size: 110px;
+		width: 1920px;
+	}
+
+	#roundContainer {
+		display: none;
+		left: -11px;
+		text-align: right;
+		width: 1920px;
+	}
+
+	#mic {
+		position: absolute;
+		left: 703px;
+		top: 237px;
+		font-size: 35px;
+		color: black;
+	}
+
+	#cName1,
+	#cName2 {
+		font-family: Brushot;
+		position: absolute;
+		left: 191px;
+		top: 239px;
+		height: 35px;
+		width: 500px;
+		font-size: 28px;
+		text-align: right;
+		color: black;
+	}
+
+	#cName2 {
+		left: 736px;
+		text-align: left;
+	}
+
+	#logo {
+		position: absolute;
+		width: 467px;
+		aspect-ratio: 1/1;
+		top: 625px;
+		left: 1454px;
+		content: url(images/OmegaMinitxt.png);
+	}
+</style>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Title</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	</head>
+
+	<body onload="init()">
+		<div id="background"></div>
+
+		<div id="roundContainer">
+			<div id="round">Winners Semi Finals</div>
+		</div>
+
+		<div id="box1"></div>
+		<div id="box2"></div>
+		<div id="box3"></div>
+		<div id="box4"></div>
+		<div id="box5"></div>
+
+		<div id="logo"></div>
+
+		<div id="gameContainer">
+			<div id="game">TEKKEN 8</div>
+		</div>
+
+		<div id="mic">
+			<i class="fa fa-microphone"></i>
+		</div>
+		<div id="cName1">Commentator 1</div>
+		<div id="cName2">Commentator 2</div>
+
+		<div id="debug"></div>
+	</body>
+</html>
+
+<script type="text/javascript">
+	/*
+	function updateUI() {
+		document.getElementById("round").innerHTML = localStorage.getItem("round");
+
+		document.getElementById("game").innerHTML = localStorage.getItem("game");
+
+		let cName1 = localStorage.getItem("cName1");
+		let cName2 = localStorage.getItem("cName2");
+
+		if ((cName1 == null || cName1 == "") && (cName2 == null || cName2 == "")) {
+			document.getElementById("mic").style.display = "none";
+		} else {
+			document.getElementById("mic").style.display = "block";
+		}
+
+		document.getElementById("cName1").innerHTML = localStorage.getItem("cName1");
+		document.getElementById("cName2").innerHTML = localStorage.getItem("cName2");
+	}
+
+	function init() {
+		window.addEventListener(
+			"storage",
+			function (e) {
+				// do your checks to detect\
+				updateUI();
+				document.getElement;
+				// changes in "e1", "e2" & "e3" here
+			},
+			false
+		);
+
+		window.addEventListener("storage", () => {
+			// When local storage changes, dump the list to
+			// the console.
+			console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+		});
+		updateUI();
+	}
+
+	function trimInput(input) {
+		return input.length > 10 ? input.substring(0, 10) + "..." : input;
+	}
+</script>

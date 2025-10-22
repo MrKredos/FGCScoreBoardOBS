@@ -50,6 +50,10 @@ pCharacter1, pCharacter2 //might discontinue this idea, too many games to play a
 ```
 ## Changelog
 ```
+v3.0 visual update
+panel.html
++ added more CSS, lots of CSS.
++ added demo for omega-mini 
 
 Progress
 v2.9 POST OMEGA 4 
@@ -183,21 +187,21 @@ v1.0:
 - maybe change the variable names to match start.gg? 
 - adding the start.gg api key manually
 - searching for indiviual players instead of typing manually
-- crew battle
-- 2v2s for mario kart world (using crew battle). 
+~~- crew battle~~
+~~- 2v2s for mario kart world (using crew battle). ~~
 - mario kart world 24 player
 ## WISHLIST: 
 - Everything
-- ~~Start.gg api implementation NEARLY THERE~~
+- Start.gg api implementation NEARLY THERE
 - ~~1v1s~~
-- 2v2s
+~~- 2v2s~~
 - Import database/JSON/excel/text
 - Challonge API
-- Insta replays 
+- Instant replays 
 - Display top 8 bracket, or whole bracket
   - Whole bracket sounds a little too complicated, but worth the challenge
 - ~~Exhibitions~~
   - ~~Not deathmatches but like team vs team stuff, maybe up to 20 people per team?~~
   - ~~Similar to how Mildsome does his 3S East vs West series (https://www.youtube.com/watch?v=OsRCyU94hxk)~~
-  - ~~Local time display (togglable)~~
+- ~~Local time display (togglable)~~
 
